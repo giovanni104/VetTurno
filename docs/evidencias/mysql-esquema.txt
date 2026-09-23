@@ -1,0 +1,10 @@
+Tables_in_vetturno
+citas
+mascotas
+propietarios
+usuarios
+veterinarios
+Table	Create Table
+mascotas	CREATE TABLE `mascotas` (\n  `id` bigint NOT NULL AUTO_INCREMENT,\n  `especie` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,\n  `nombre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,\n  `raza` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,\n  `propietario_id` bigint NOT NULL,\n  PRIMARY KEY (`id`),\n  KEY `FK1vjj1iqumuy9tjgwdssrighdv` (`propietario_id`),\n  CONSTRAINT `FK1vjj1iqumuy9tjgwdssrighdv` FOREIGN KEY (`propietario_id`) REFERENCES `propietarios` (`id`)\n) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+Table	Create Table
+citas	CREATE TABLE `citas` (\n  `id` bigint NOT NULL AUTO_INCREMENT,\n  `fecha_hora` datetime(6) NOT NULL,\n  `motivo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,\n  `mascota_id` bigint NOT NULL,\n  `veterinario_id` bigint NOT NULL,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `uk_cita_veterinario_fecha` (`veterinario_id`,`fecha_hora`),\n  KEY `FKmoh4y7wq0bqnr9hf70j2m8hjk` (`mascota_id`),\n  CONSTRAINT `FK5rhwndcfpmmw9qw23w84uvtge` FOREIGN KEY (`veterinario_id`) REFERENCES `veterinarios` (`id`),\n  CONSTRAINT `FKmoh4y7wq0bqnr9hf70j2m8hjk` FOREIGN KEY (`mascota_id`) REFERENCES `mascotas` (`id`)\n) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci

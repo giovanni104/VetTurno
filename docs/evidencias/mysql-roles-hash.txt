@@ -1,0 +1,5 @@
+filas_actualizadas
+1
+id	email	rol	hash_bcrypt
+5	marta-ui-1790140269551@example.com	ADMIN	$2a$10$...[OCULTO]
+4	paula-ui-1790140269551@example.com	USER	$2a$10$...[OCULTO]

@@ -1,0 +1,91 @@
+{
+  "tipo": "Reinicio real de la JVM Java 17 y consulta desde Swagger con Authorize",
+  "fecha": "2026-09-23T05:13:03.025Z",
+  "estado": 200,
+  "antes": [
+    {
+      "id": 2,
+      "fechaHora": "2026-09-23T09:00:00",
+      "motivo": "Primera",
+      "mascota": "Luna",
+      "propietario": "Responsable fa346005-b152-4837-879d-08c82e973965",
+      "veterinario": "Andres fa346005-b152-4837-879d-08c82e973965"
+    },
+    {
+      "id": 1,
+      "fechaHora": "2026-09-23T10:00:00",
+      "motivo": "Control",
+      "mascota": "Luna",
+      "propietario": "Responsable fa346005-b152-4837-879d-08c82e973965",
+      "veterinario": "Andres fa346005-b152-4837-879d-08c82e973965"
+    },
+    {
+      "id": 3,
+      "fechaHora": "2026-09-23T11:00:00",
+      "motivo": "Concurrente",
+      "mascota": "Luna",
+      "propietario": "Responsable fa346005-b152-4837-879d-08c82e973965",
+      "veterinario": "Andres fa346005-b152-4837-879d-08c82e973965"
+    },
+    {
+      "id": 6,
+      "fechaHora": "2026-09-24T09:00:00",
+      "motivo": "Control previo UI",
+      "mascota": "Luna UI",
+      "propietario": "Laura UI 1790140269551",
+      "veterinario": "Andres UI 1790140269551"
+    },
+    {
+      "id": 5,
+      "fechaHora": "2026-09-24T10:00:00",
+      "motivo": "Control general UI",
+      "mascota": "Luna UI",
+      "propietario": "Laura UI 1790140269551",
+      "veterinario": "Andres UI 1790140269551"
+    }
+  ],
+  "despues": [
+    {
+      "id": 2,
+      "fechaHora": "2026-09-23T09:00:00",
+      "motivo": "Primera",
+      "mascota": "Luna",
+      "propietario": "Responsable fa346005-b152-4837-879d-08c82e973965",
+      "veterinario": "Andres fa346005-b152-4837-879d-08c82e973965"
+    },
+    {
+      "id": 1,
+      "fechaHora": "2026-09-23T10:00:00",
+      "motivo": "Control",
+      "mascota": "Luna",
+      "propietario": "Responsable fa346005-b152-4837-879d-08c82e973965",
+      "veterinario": "Andres fa346005-b152-4837-879d-08c82e973965"
+    },
+    {
+      "id": 3,
+      "fechaHora": "2026-09-23T11:00:00",
+      "motivo": "Concurrente",
+      "mascota": "Luna",
+      "propietario": "Responsable fa346005-b152-4837-879d-08c82e973965",
+      "veterinario": "Andres fa346005-b152-4837-879d-08c82e973965"
+    },
+    {
+      "id": 6,
+      "fechaHora": "2026-09-24T09:00:00",
+      "motivo": "Control previo UI",
+      "mascota": "Luna UI",
+      "propietario": "Laura UI 1790140269551",
+      "veterinario": "Andres UI 1790140269551"
+    },
+    {
+      "id": 5,
+      "fechaHora": "2026-09-24T10:00:00",
+      "motivo": "Control general UI",
+      "mascota": "Luna UI",
+      "propietario": "Laura UI 1790140269551",
+      "veterinario": "Andres UI 1790140269551"
+    }
+  ],
+  "mismosRegistros": true,
+  "citaVerificada": 5
+}

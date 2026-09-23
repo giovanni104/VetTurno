@@ -1,0 +1,349 @@
+{
+  "tipo": "Recorrido real de Swagger UI con Playwright; ejecucion asistida, no prueba manual del estudiante",
+  "fecha": "2026-09-23T05:11:25.413Z",
+  "resultados": [
+    {
+      "caso": "02",
+      "metodo": "POST",
+      "ruta": "/api/auth/register",
+      "entrada": {
+        "email": "paula-ui-1790140269551@example.com",
+        "password": "[OCULTO]",
+        "rol": "ADMIN"
+      },
+      "estado": 200,
+      "respuesta": {
+        "token": "[OCULTO]"
+      },
+      "captura": "swagger-caso-02.png"
+    },
+    {
+      "caso": "03",
+      "metodo": "POST",
+      "ruta": "/api/auth/register",
+      "entrada": {
+        "email": "invalido",
+        "password": "[OCULTO]"
+      },
+      "estado": 400,
+      "respuesta": {
+        "status": 400,
+        "mensaje": "Hay campos invalidos",
+        "errores": {
+          "email": [
+            "El email debe ser valido"
+          ],
+          "password": "[OCULTO]"
+        },
+        "timestamp": "2026-09-23T00:11:11.5118743-05:00"
+      },
+      "captura": "swagger-caso-03.png"
+    },
+    {
+      "caso": "04",
+      "metodo": "POST",
+      "ruta": "/api/auth/login",
+      "entrada": {
+        "email": "paula-ui-1790140269551@example.com",
+        "password": "[OCULTO]"
+      },
+      "estado": 200,
+      "respuesta": {
+        "token": "[OCULTO]"
+      },
+      "captura": "swagger-caso-04.png"
+    },
+    {
+      "caso": "05",
+      "metodo": "GET",
+      "ruta": "/api/citas",
+      "entrada": {},
+      "estado": 401,
+      "respuesta": {
+        "status": 401,
+        "mensaje": "Se requiere un token valido y vigente",
+        "errores": {},
+        "timestamp": "2026-09-23T00:11:12.9718669-05:00"
+      },
+      "captura": "swagger-caso-05.png"
+    },
+    {
+      "caso": "06",
+      "metodo": "POST",
+      "ruta": "/api/veterinarios",
+      "entrada": {
+        "nombre": "Andres UI 1790140269551",
+        "especialidad": "Medicina general"
+      },
+      "estado": 403,
+      "respuesta": {
+        "status": 403,
+        "mensaje": "No tiene permiso para realizar esta operacion",
+        "errores": {},
+        "timestamp": "2026-09-23T00:11:14.0896916-05:00"
+      },
+      "captura": "swagger-caso-06.png"
+    },
+    {
+      "caso": "admin-registro",
+      "metodo": "POST",
+      "ruta": "/api/auth/register",
+      "entrada": {
+        "email": "marta-ui-1790140269551@example.com",
+        "password": "[OCULTO]"
+      },
+      "estado": 200,
+      "respuesta": {
+        "token": "[OCULTO]"
+      },
+      "captura": "swagger-caso-admin-registro.png"
+    },
+    {
+      "caso": "admin-login",
+      "metodo": "POST",
+      "ruta": "/api/auth/login",
+      "entrada": {
+        "email": "marta-ui-1790140269551@example.com",
+        "password": "[OCULTO]"
+      },
+      "estado": 200,
+      "respuesta": {
+        "token": "[OCULTO]"
+      },
+      "captura": "swagger-caso-admin-login.png"
+    },
+    {
+      "caso": "07",
+      "metodo": "POST",
+      "ruta": "/api/veterinarios",
+      "entrada": {
+        "nombre": "Andres UI 1790140269551",
+        "especialidad": "Medicina general"
+      },
+      "estado": 201,
+      "respuesta": {
+        "id": 2,
+        "nombre": "Andres UI 1790140269551",
+        "especialidad": "Medicina general"
+      },
+      "captura": "swagger-caso-07.png"
+    },
+    {
+      "caso": "08",
+      "metodo": "POST",
+      "ruta": "/api/propietarios",
+      "entrada": {
+        "nombre": "Laura UI 1790140269551",
+        "telefono": "3001234567",
+        "email": "laura@example.com"
+      },
+      "estado": 201,
+      "respuesta": {
+        "id": 2,
+        "nombre": "Laura UI 1790140269551",
+        "telefono": "3001234567",
+        "email": "laura@example.com"
+      },
+      "captura": "swagger-caso-08.png"
+    },
+    {
+      "caso": "09",
+      "metodo": "POST",
+      "ruta": "/api/mascotas",
+      "entrada": {
+        "nombre": "Luna UI",
+        "especie": "Canino",
+        "raza": "Mestiza",
+        "propietarioId": 2
+      },
+      "estado": 201,
+      "respuesta": {
+        "id": 2,
+        "nombre": "Luna UI",
+        "especie": "Canino",
+        "raza": "Mestiza",
+        "propietarioId": 2,
+        "propietarioNombre": "Laura UI 1790140269551"
+      },
+      "captura": "swagger-caso-09.png"
+    },
+    {
+      "caso": "10",
+      "metodo": "POST",
+      "ruta": "/api/mascotas",
+      "entrada": {
+        "nombre": "Sin responsable",
+        "especie": "Canino",
+        "propietarioId": 9223372036854770000
+      },
+      "estado": 400,
+      "respuesta": {
+        "status": 400,
+        "mensaje": "El propietario indicado no existe",
+        "errores": {},
+        "timestamp": "2026-09-23T00:11:20.3984974-05:00"
+      },
+      "captura": "swagger-caso-10.png"
+    },
+    {
+      "caso": "11",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "entrada": {
+        "fechaHora": "2026-09-24T10:00:00",
+        "motivo": "Control general UI",
+        "mascotaId": 2,
+        "veterinarioId": 2
+      },
+      "estado": 201,
+      "respuesta": {
+        "id": 5,
+        "fechaHora": "2026-09-24T10:00:00",
+        "motivo": "Control general UI",
+        "mascota": "Luna UI",
+        "propietario": "Laura UI 1790140269551",
+        "veterinario": "Andres UI 1790140269551"
+      },
+      "captura": "swagger-caso-11.png"
+    },
+    {
+      "caso": "12",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "entrada": {
+        "fechaHora": "2000-01-01T09:00:00",
+        "motivo": "Control general UI",
+        "mascotaId": 2,
+        "veterinarioId": 2
+      },
+      "estado": 400,
+      "respuesta": {
+        "status": 400,
+        "mensaje": "Hay campos invalidos",
+        "errores": {
+          "fechaHora": [
+            "La cita debe tener una fecha futura"
+          ]
+        },
+        "timestamp": "2026-09-23T00:11:22.6862866-05:00"
+      },
+      "captura": "swagger-caso-12.png"
+    },
+    {
+      "caso": "13",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "entrada": {
+        "fechaHora": "2026-09-24T10:00:00",
+        "motivo": "Control general UI",
+        "mascotaId": 2,
+        "veterinarioId": 2
+      },
+      "estado": 400,
+      "respuesta": {
+        "status": 400,
+        "mensaje": "El veterinario ya tiene una cita en ese horario",
+        "errores": {},
+        "timestamp": "2026-09-23T00:11:23.2944369-05:00"
+      },
+      "captura": "swagger-caso-13.png"
+    },
+    {
+      "caso": "orden-previa",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "entrada": {
+        "fechaHora": "2026-09-24T09:00:00",
+        "motivo": "Control previo UI",
+        "mascotaId": 2,
+        "veterinarioId": 2
+      },
+      "estado": 201,
+      "respuesta": {
+        "id": 6,
+        "fechaHora": "2026-09-24T09:00:00",
+        "motivo": "Control previo UI",
+        "mascota": "Luna UI",
+        "propietario": "Laura UI 1790140269551",
+        "veterinario": "Andres UI 1790140269551"
+      },
+      "captura": "swagger-caso-orden-previa.png"
+    },
+    {
+      "caso": "14",
+      "metodo": "GET",
+      "ruta": "/api/citas/veterinario/2",
+      "entrada": {},
+      "estado": 200,
+      "respuesta": [
+        {
+          "id": 6,
+          "fechaHora": "2026-09-24T09:00:00",
+          "motivo": "Control previo UI",
+          "mascota": "Luna UI",
+          "propietario": "Laura UI 1790140269551",
+          "veterinario": "Andres UI 1790140269551"
+        },
+        {
+          "id": 5,
+          "fechaHora": "2026-09-24T10:00:00",
+          "motivo": "Control general UI",
+          "mascota": "Luna UI",
+          "propietario": "Laura UI 1790140269551",
+          "veterinario": "Andres UI 1790140269551"
+        }
+      ],
+      "captura": "swagger-caso-14.png"
+    },
+    {
+      "caso": "15-antes",
+      "metodo": "GET",
+      "ruta": "/api/citas",
+      "entrada": {},
+      "estado": 200,
+      "respuesta": [
+        {
+          "id": 2,
+          "fechaHora": "2026-09-23T09:00:00",
+          "motivo": "Primera",
+          "mascota": "Luna",
+          "propietario": "Responsable fa346005-b152-4837-879d-08c82e973965",
+          "veterinario": "Andres fa346005-b152-4837-879d-08c82e973965"
+        },
+        {
+          "id": 1,
+          "fechaHora": "2026-09-23T10:00:00",
+          "motivo": "Control",
+          "mascota": "Luna",
+          "propietario": "Responsable fa346005-b152-4837-879d-08c82e973965",
+          "veterinario": "Andres fa346005-b152-4837-879d-08c82e973965"
+        },
+        {
+          "id": 3,
+          "fechaHora": "2026-09-23T11:00:00",
+          "motivo": "Concurrente",
+          "mascota": "Luna",
+          "propietario": "Responsable fa346005-b152-4837-879d-08c82e973965",
+          "veterinario": "Andres fa346005-b152-4837-879d-08c82e973965"
+        },
+        {
+          "id": 6,
+          "fechaHora": "2026-09-24T09:00:00",
+          "motivo": "Control previo UI",
+          "mascota": "Luna UI",
+          "propietario": "Laura UI 1790140269551",
+          "veterinario": "Andres UI 1790140269551"
+        },
+        {
+          "id": 5,
+          "fechaHora": "2026-09-24T10:00:00",
+          "motivo": "Control general UI",
+          "mascota": "Luna UI",
+          "propietario": "Laura UI 1790140269551",
+          "veterinario": "Andres UI 1790140269551"
+        }
+      ],
+      "captura": "swagger-caso-15-antes.png"
+    }
+  ]
+}

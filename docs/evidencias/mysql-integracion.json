@@ -1,0 +1,130 @@
+{
+  "citaPersistidaId" : 1,
+  "concurrencia" : [ 201, 400 ],
+  "resultados" : [ {
+    "estado" : 200,
+    "ruta" : "/api/auth/register",
+    "respuesta" : {
+      "token" : "[OCULTO]"
+    }
+  }, {
+    "estado" : 400,
+    "ruta" : "/api/auth/register",
+    "respuesta" : {
+      "status" : 400,
+      "mensaje" : "Hay campos invalidos",
+      "errores" : {
+        "email" : [ "El email debe ser valido" ],
+        "password" : [ "La contrasena debe tener al menos 8 caracteres" ]
+      },
+      "timestamp" : "2026-09-22T23:55:44.3675431-05:00"
+    }
+  }, {
+    "estado" : 200,
+    "ruta" : "/api/auth/login",
+    "respuesta" : {
+      "token" : "[OCULTO]"
+    }
+  }, {
+    "estado" : 403,
+    "ruta" : "/api/veterinarios",
+    "respuesta" : {
+      "status" : 403,
+      "mensaje" : "No tiene permiso para realizar esta operacion",
+      "errores" : { },
+      "timestamp" : "2026-09-22T23:55:44.5555501-05:00"
+    }
+  }, {
+    "estado" : 200,
+    "ruta" : "/api/auth/register",
+    "respuesta" : {
+      "token" : "[OCULTO]"
+    }
+  }, {
+    "estado" : 200,
+    "ruta" : "/api/auth/login",
+    "respuesta" : {
+      "token" : "[OCULTO]"
+    }
+  }, {
+    "estado" : 201,
+    "ruta" : "/api/veterinarios",
+    "respuesta" : {
+      "id" : 1,
+      "nombre" : "Andres fa346005-b152-4837-879d-08c82e973965",
+      "especialidad" : "General"
+    }
+  }, {
+    "estado" : 201,
+    "ruta" : "/api/propietarios",
+    "respuesta" : {
+      "id" : 1,
+      "nombre" : "Responsable fa346005-b152-4837-879d-08c82e973965",
+      "telefono" : "3001234567",
+      "email" : null
+    }
+  }, {
+    "estado" : 201,
+    "ruta" : "/api/mascotas",
+    "respuesta" : {
+      "id" : 1,
+      "nombre" : "Luna",
+      "especie" : "Canino",
+      "raza" : null,
+      "propietarioId" : 1,
+      "propietarioNombre" : "Responsable fa346005-b152-4837-879d-08c82e973965"
+    }
+  }, {
+    "estado" : 400,
+    "ruta" : "/api/mascotas",
+    "respuesta" : {
+      "status" : 400,
+      "mensaje" : "El propietario indicado no existe",
+      "errores" : { },
+      "timestamp" : "2026-09-22T23:55:44.8827678-05:00"
+    }
+  }, {
+    "estado" : 201,
+    "ruta" : "/api/citas",
+    "respuesta" : {
+      "id" : 1,
+      "fechaHora" : "2026-09-23T10:00:00",
+      "motivo" : "Control",
+      "mascota" : "Luna",
+      "propietario" : "Responsable fa346005-b152-4837-879d-08c82e973965",
+      "veterinario" : "Andres fa346005-b152-4837-879d-08c82e973965"
+    }
+  }, {
+    "estado" : 400,
+    "ruta" : "/api/citas",
+    "respuesta" : {
+      "status" : 400,
+      "mensaje" : "Hay campos invalidos",
+      "errores" : {
+        "fechaHora" : [ "La cita debe tener una fecha futura" ]
+      },
+      "timestamp" : "2026-09-22T23:55:44.9975588-05:00"
+    }
+  }, {
+    "estado" : 400,
+    "ruta" : "/api/citas",
+    "respuesta" : {
+      "status" : 400,
+      "mensaje" : "El veterinario ya tiene una cita en ese horario",
+      "errores" : { },
+      "timestamp" : "2026-09-22T23:55:45.0194101-05:00"
+    }
+  }, {
+    "estado" : 201,
+    "ruta" : "/api/citas",
+    "respuesta" : {
+      "id" : 2,
+      "fechaHora" : "2026-09-23T09:00:00",
+      "motivo" : "Primera",
+      "mascota" : "Luna",
+      "propietario" : "Responsable fa346005-b152-4837-879d-08c82e973965",
+      "veterinario" : "Andres fa346005-b152-4837-879d-08c82e973965"
+    }
+  } ],
+  "tipo" : "Prueba automatizada con MySQL real; no es prueba manual"
+}
