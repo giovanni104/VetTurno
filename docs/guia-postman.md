@@ -35,7 +35,7 @@ Abre una terminal y entra al cliente MySQL del contenedor:
 docker exec -it vetturno-mysql mysql -u vetturno -p vetturno
 ```
 
-Introduce la contraseña **de la base de datos** cuando la solicite. Puedes consultarla en el archivo local `.local/conexion-mysql.txt`. No es la contraseña de Paula ni la de Marta.
+Introduce la contraseña **de la base de datos** cuando la solicite. Puedes consultarla en el valor `DB_PASSWORD` de `config/application-local.properties`, generado por el script de preparacion. No es la contraseña de Paula ni la de Marta.
 
 En las variables del entorno Postman, copia el valor de **sqlPromocionAdmin** y ejecútalo en MySQL. Revisa que se actualice exactamente una fila y que el correo de esta ronda tenga rol ADMIN. El SQL incluye una transacción y una consulta de comprobación.
 

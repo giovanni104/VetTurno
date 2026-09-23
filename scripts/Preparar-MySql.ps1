@@ -41,7 +41,8 @@ if (!(Test-Path -LiteralPath $secretPath)) {
     [IO.File]::WriteAllLines($secretPath, $mysqlValues, [Text.UTF8Encoding]::new($false))
     [IO.File]::WriteAllLines($configPath, $appValues, [Text.UTF8Encoding]::new($false))
 }
-docker compose up -d mysql
+if (!(Test-Path -LiteralPath $configPath)) { throw 'Falta config/application-local.properties. Recupera la configuracion de esta base antes de continuar.' }
+docker compose up -d --wait --wait-timeout 180 mysql
 if ($LASTEXITCODE -ne 0) { throw 'No se pudo iniciar MySQL. Revisa Docker; conserva los archivos de credenciales.' }
 Write-Output 'MySQL: 127.0.0.1:3307, base vetturno, usuario vetturno.'
 Write-Output 'La contrasena de la aplicacion esta en config/application-local.properties (DB_PASSWORD).'

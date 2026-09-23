@@ -46,6 +46,10 @@ src/main/java/com/huellitas/vetturno/
 
 Las llaves foráneas están en Mascota y Cita. No hay colecciones inversas innecesarias. Las respuestas usan DTO, nunca entidades JPA ni contraseñas. CitaDTO muestra los nombres de mascota, propietario y veterinario.
 
+## Inicio para evaluar el proyecto
+
+Consulta la [guia de ejecucion para la profesora](docs/ejecucion-profesora.md). En Windows, con JDK 17 y Docker Desktop iniciado, ejecuta `powershell -ExecutionPolicy Bypass -File .\scripts\Iniciar-Proyecto.ps1`. El script genera las credenciales locales, espera a MySQL e inicia la API. No necesitas recibir carpetas privadas del estudiante.
+
 ## Cómo ejecutar desde cero
 
 ### 1. Clonar y comprobar Java
