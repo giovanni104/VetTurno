@@ -1,0 +1,99 @@
+{
+  "fecha": "2026-09-23T17:16:59.065Z",
+  "solicitudes": 18,
+  "operaciones": 11,
+  "fallos": 0,
+  "nota": "Verificacion tecnica externa de los ejemplos: se sustituyeron en memoria correos, tokens, ids y fechas como lo haria el estudiante. La coleccion entregada no contiene scripts. No representa una ejecucion manual del estudiante.",
+  "resultados": [
+    {
+      "solicitud": "01 - Registrar a Paula",
+      "estado": 200,
+      "esperado": 200
+    },
+    {
+      "solicitud": "02 - Login de Paula",
+      "estado": 200,
+      "esperado": 200
+    },
+    {
+      "solicitud": "03 - Registrar a Marta",
+      "estado": 200,
+      "esperado": 200
+    },
+    {
+      "solicitud": "04 - Login de Marta",
+      "estado": 200,
+      "esperado": 200
+    },
+    {
+      "solicitud": "05 - Registrar responsable",
+      "estado": 201,
+      "esperado": 201
+    },
+    {
+      "solicitud": "06 - Consultar responsables",
+      "estado": 200,
+      "esperado": 200
+    },
+    {
+      "solicitud": "07 - Registrar mascota",
+      "estado": 201,
+      "esperado": 201
+    },
+    {
+      "solicitud": "08 - Consultar mascotas",
+      "estado": 200,
+      "esperado": 200
+    },
+    {
+      "solicitud": "09 - Registrar veterinario como ADMIN",
+      "estado": 201,
+      "esperado": 201
+    },
+    {
+      "solicitud": "10 - Consultar veterinarios",
+      "estado": 200,
+      "esperado": 200
+    },
+    {
+      "solicitud": "11 - Registrar cita a las 10",
+      "estado": 201,
+      "esperado": 201
+    },
+    {
+      "solicitud": "12 - Registrar cita a las 09",
+      "estado": 201,
+      "esperado": 201
+    },
+    {
+      "solicitud": "13 - Consultar agenda",
+      "estado": 200,
+      "esperado": 200
+    },
+    {
+      "solicitud": "14 - Consultar agenda por veterinario",
+      "estado": 200,
+      "esperado": 200
+    },
+    {
+      "solicitud": "15 - Responsable con datos invalidos",
+      "estado": 400,
+      "esperado": 400
+    },
+    {
+      "solicitud": "16 - Cita con horario cruzado",
+      "estado": 400,
+      "esperado": 400
+    },
+    {
+      "solicitud": "17 - Registrar veterinario como USER",
+      "estado": 403,
+      "esperado": 403
+    },
+    {
+      "solicitud": "18 - Consultar agenda sin token",
+      "estado": 401,
+      "esperado": 401
+    }
+  ]
+}

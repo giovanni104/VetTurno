@@ -106,7 +106,7 @@ Un veterinario existente sin citas devuelve 200 y []; un veterinario inexistente
 
 ## Pruebas con Postman
 
-Importa la [colección](postman/VetTurno.postman_collection.json) y el [entorno local](postman/VetTurno-Local.postman_environment.json). Sigue la [guía paso a paso](docs/guia-postman.md), incluida la pausa para habilitar ADMIN. Incluye 40 solicitudes para los once endpoints; la [ejecución con Newman](docs/evidencias/postman-newman.json) registró 173 aserciones sin fallos.
+Importa la [colección](postman/VetTurno.postman_collection.json) y el [entorno local](postman/VetTurno-Local.postman_environment.json). Sigue la [guía paso a paso](docs/guia-postman.md). Incluye 18 solicitudes manuales para los once endpoints: pulsa Send, copia los tokens al entorno y reemplaza los ids en los ejemplos. No requiere scripts ni Collection Runner. Los reportes antiguos de 40 solicitudes corresponden a la versión automatizada anterior.
 
 ## Flujo en Swagger y primer ADMIN
 

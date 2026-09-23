@@ -1,137 +1,141 @@
-# Guía de Postman — VetTurno
+# Postman: practicar VetTurno paso a paso
 
-## 1. Importar y preparar
+Esta coleccion tiene **18 solicitudes que cubren los 11 endpoints**. Se utilizan de una en una, pulsando **Send**. No contiene scripts, generacion automatica de datos ni pruebas programadas.
 
-Importa en Postman los dos archivos de la carpeta `postman`:
+## 1. Iniciar e importar
 
-- `VetTurno.postman_collection.json`: solicitudes y pruebas automáticas.
-- `VetTurno-Local.postman_environment.json`: variables locales.
+Inicia la API siguiendo la [guia de Docker](ejecucion-profesora.md).
 
-Selecciona el entorno **VetTurno - Local**. La API debe estar iniciada y conectada a MySQL. `baseUrl` es `http://localhost:8080`; MySQL usa el puerto interno 3306 en Docker. Inicia el proyecto con la [guia facil](ejecucion-profesora.md).
+En Postman, pulsa **Import** e importa estos dos archivos de la carpeta postman:
 
-La colección contiene **40 solicitudes para los 11 endpoints**. Las respuestas 400, 401 y 403 son resultados esperados en las pruebas negativas: sus aserciones deben aparecer aprobadas.
+- **VetTurno.postman_collection.json**
+- **VetTurno-Local.postman_environment.json**
 
-Usa **Run collection / Collection Runner**. Activa **Keep variable values** para conservar tokens e identificadores entre fases. Ejecuta una sola iteración, en el orden definido. Los nombres de las opciones pueden variar según la versión de Postman.
+Selecciona el entorno **VetTurno - Local sencillo**. La coleccion se llama **VetTurno - Practica paso a paso**. Si conservas la coleccion anterior, usa esta nueva para la practica.
 
-## 2. Registrar cuentas: carpeta 01
+El entorno solo contiene tres valores:
 
-Ejecuta **01 - Preparar cuentas y PAUSAR**. La primera solicitud genera una ronda con:
+| Variable | Valor |
+| --- | --- |
+| baseUrl | http://localhost:8080 |
+| tokenUsuario | Aqui pegaras el token de Paula |
+| tokenAdmin | Aqui pegaras el token de Marta |
 
-- Correos únicos de Paula y Marta.
-- Contraseñas locales si las variables están vacías.
-- Nombres únicos de responsables, mascotas y veterinarios.
-- Fechas de mañana a las 09:00 y 10:00, calculadas con hora de Colombia.
-- La variable `sqlPromocionAdmin`, con el correo exacto de Marta.
+Los textos entre llaves, como `{{baseUrl}}`, toman su valor del entorno seleccionado.
 
-Ambas cuentas se registran como **USER**, aunque el cuerpo intente enviar ADMIN. La carpeta comprueba que Marta recibe 403 al registrar un veterinario y detiene el Runner.
+## 2. Registrar e iniciar sesion
 
-Si ejecutas toda la colección desde el principio, también se detendrá aquí. La pausa es intencional. Al enviar solicitudes individualmente con **Send**, respeta tú el orden: el control de flujo solo se aplica al Runner/Newman.
+Abre la carpeta **1 - Registro y login**.
 
-## 3. Habilitar ADMIN en MySQL
+1. En **01 - Registrar a Paula**, abre **Body** para ver el JSON y pulsa **Send**. Espera **200 OK**.
+2. En **02 - Login de Paula**, pulsa **Send**. La respuesta tendra esta forma:
 
-Abre una terminal y entra al cliente MySQL del contenedor:
+```json
+{
+  "token": "un-token-largo"
+}
+```
 
-```powershell
+3. Copia solo el valor del token, sin comillas ni la palabra Bearer.
+4. Abre el entorno y pega el valor en **tokenUsuario**. Guarda el cambio.
+5. Ejecuta **03 - Registrar a Marta**. Espera **200 OK**. Marta todavia es USER.
+
+Los correos y contraseñas de los cuerpos son ejemplos de practica. Si un correo ya esta registrado, utiliza el login con su contraseña original o cambia el correo tanto en registro como en login. Un segundo registro del mismo correo devuelve 400.
+
+## 3. Dar permiso ADMIN a Marta
+
+Desde la carpeta del proyecto, abre MySQL:
+
+```text
 docker compose exec mysql mysql -u vetturno -p vetturno
 ```
 
-Introduce la contraseña **de la base de datos** cuando la solicite. Puedes consultarla en el valor `MYSQL_PASSWORD` de `.env`. No es la contraseña de Paula ni la de Marta.
+Introduce la contraseña **MYSQL_PASSWORD** de tu archivo .env. Esta es la clave de la base, no la contraseña de Marta.
 
-En las variables del entorno Postman, copia el valor de **sqlPromocionAdmin** y ejecútalo en MySQL. Revisa que se actualice exactamente una fila y que el correo de esta ronda tenga rol ADMIN. El SQL incluye una transacción y una consulta de comprobación.
+Ejecuta este SQL. Si cambiaste el correo de Marta en Postman, cambialo aqui tambien:
 
-Esta promoción es manual y controlada, conforme al taller. La colección no tiene un endpoint para cambiar roles. No edites el rol del JSON de registro para intentar obtener privilegios.
+```sql
+START TRANSACTION;
+UPDATE usuarios SET rol = 'ADMIN'
+WHERE email = 'marta.postman@example.com' AND rol = 'USER';
+SELECT ROW_COUNT() AS filas_actualizadas;
+SELECT id, email, rol FROM usuarios
+WHERE email = 'marta.postman@example.com';
+```
 
-## 4. Ejecutar el flujo completo: carpetas 02, 03 y 04
+Comprueba la cuenta y la fila actualizada. Si es correcto, ejecuta `COMMIT;`; si no, `ROLLBACK;`. Sal con `exit;`. Si ya era ADMIN, no es necesario promoverla otra vez.
 
-En el Runner, selecciona **solo** estas carpetas, en orden:
+Ahora ejecuta **04 - Login de Marta**. Copia su token en **tokenAdmin** del entorno.
 
-1. **02 - ADMIN y veterinarios**: inicia sesión nuevamente como Marta y registra dos veterinarios.
-2. **03 - Flujo de responsables mascotas y citas**: crea un responsable, su mascota y tres citas, y consulta las agendas.
-3. **04 - Validaciones y permisos**: comprueba datos inválidos, referencias inexistentes, cruce de horario, permisos y autenticación.
+## 4. Crear responsable, mascota y veterinario
 
-Las respuestas guardan automáticamente los tokens y los identificadores en el entorno. No debes copiar ids a mano.
+Continua en orden:
 
-Se crea primero una cita a las 10:00 y luego otra a las 09:00 con el mismo veterinario. La consulta debe devolverlas en orden ascendente. La tercera cita usa otro veterinario a las 10:00 y debe permitirse.
+| Solicitud | Que debes hacer | Respuesta |
+| --- | --- | --- |
+| 05 - Registrar responsable | Enviar y anotar el id de Laura | 201 |
+| 06 - Consultar responsables | Buscar a Laura en la lista | 200 |
+| 07 - Registrar mascota | Cambiar propietarioId por el id de Laura; enviar y anotar el id de Luna | 201 |
+| 08 - Consultar mascotas | Comprobar que Luna pertenece a Laura | 200 |
+| 09 - Registrar veterinario como ADMIN | Enviar y anotar el id de Andres | 201 |
+| 10 - Consultar veterinarios | Buscar a Andres | 200 |
 
-No vuelvas a ejecutar la solicitud 01 entre estas fases: inicia una ronda nueva y borra sus variables anteriores. Repetir una creación de citas de la misma ronda puede producir el 400 por duplicidad esperado por la regla de negocio.
+**Los ids 1 del ejemplo no son valores garantizados.** Si Laura tiene id 7, el cuerpo de la mascota debe contener `"propietarioId": 7`. Edita el numero en **Body**, sin comillas.
 
-## 5. Comprobar persistencia: carpeta 05
+Cada solicitud ya indica el token que utiliza en **Authorization**: normalmente tokenUsuario; el registro de veterinario usa tokenAdmin. No debes cambiar manualmente el token entre estas solicitudes.
 
-Después de terminar las carpetas anteriores:
+## 5. Crear y consultar citas
 
-1. Conserva el entorno y sus valores, incluida `agendaAntesReinicio`.
-2. Ejecuta `docker compose restart api` para reiniciar **la API**, manteniendo la base de datos.
-3. Espera a que la API esté disponible.
-4. Ejecuta **05 - Despues de reiniciar la API**.
+En **11 - Registrar cita a las 10**:
 
-La carpeta inicia sesión y compara las tres citas de la ronda con la instantánea guardada antes del reinicio. La colección no reinicia procesos por sí misma. Ejecutarla sin reiniciar solo comprueba que los datos siguen presentes, no demuestra persistencia tras reinicio.
+- Cambia mascotaId por el id de Luna.
+- Cambia veterinarioId por el id de Andres.
+- Revisa fechaHora: debe estar en el futuro, en hora de Colombia y con segundos en cero.
+- Pulsa Send y espera **201**.
 
-No ejecutes de nuevo el registro inicial ni recrees las citas antes de esta comparación.
+La fecha 2030-10-20 es un ejemplo. Puedes usar otro dia futuro, como mañana, manteniendo el formato `AAAA-MM-DDTHH:mm:00`.
 
-## 6. JWT vencido: carpeta 06, opcional
+En **12 - Registrar cita a las 09**, usa los mismos ids y el mismo dia, pero a las 09:00. Ambas horas deben ser futuras. Espera **201**.
 
-Los JWT duran **una hora**. Para comprobar vencimiento:
+Ejecuta **13 - Consultar agenda**. La cita de las 09:00 debe aparecer antes de la de las 10:00, aunque la creaste despues.
 
-1. Guarda un token emitido por esta API en `expiredToken`.
-2. Espera a que venza, conservando la misma clave de firma de la API.
-3. Ejecuta **06 - Opcional JWT vencido**.
+En **14 - Consultar agenda por veterinario**, cambia el **1 al final de la URL** por el id de Andres. Debe responder **200** con sus citas.
 
-La respuesta esperada es 401. Si `expiredToken` está vacío, la solicitud se omite; eso no equivale a una prueba aprobada de vencimiento. Un token inventado verifica invalidez, pero no demuestra específicamente expiración.
+## 6. Comprobar errores y permisos
 
-Para continuar una sesión normal después de una hora, repite el login de Paula y/o Marta, no sus registros.
+| Solicitud | Preparacion | Resultado esperado |
+| --- | --- | --- |
+| 15 - Responsable con datos invalidos | Enviar el ejemplo tal como esta | 400 con errores de nombre, telefono y email |
+| 16 - Cita con horario cruzado | Copiar exactamente el Body enviado en la solicitud 11, incluidos ids y fecha | 400 porque el horario del veterinario esta ocupado |
+| 17 - Registrar veterinario como USER | Tener el token de Paula en tokenUsuario | 403 por falta de permiso |
+| 18 - Consultar agenda sin token | Enviar; ya tiene No Auth | 401 porque falta autenticacion |
 
-## Cobertura
+En estas solicitudes, recibir 400, 403 o 401 es el resultado correcto. Mira el codigo de estado y el JSON de respuesta; no hay scripts que marquen pruebas en verde.
 
-| Método y ruta | Comprobación principal |
-| --- | --- |
-| POST /api/auth/register | Registro USER, rol enviado ignorado, validaciones y duplicado |
-| POST /api/auth/login | Token y credenciales incorrectas |
-| POST /api/propietarios | Creación y varios errores de campos |
-| GET /api/propietarios | Consulta autenticada |
-| POST /api/mascotas | Creación y propietario inexistente |
-| GET /api/mascotas | Consulta y relación con propietario |
-| POST /api/veterinarios | ADMIN permitido, USER prohibido y validaciones |
-| GET /api/veterinarios | Consulta autenticada |
-| POST /api/citas | Creación, pasado, segundos, referencias y cruce de horario |
-| GET /api/citas | Orden ascendente, autenticación y persistencia |
-| GET /api/citas/veterinario/{id} | Filtro, orden y veterinario inexistente |
+El manejador global convierte validaciones y reglas de negocio en 400. La seguridad comprueba identidad y permisos mediante filtros antes del controlador; por eso necesita sus propias respuestas 401/403. Un fallo imprevisto debe devolver 500 con mensaje generico; no se agrega un endpoint para provocarlo.
 
-Las pruebas verifican los códigos de respuesta, los datos creados y el formato de errores. Para el 400 de varios campos, consulta la creación inválida de propietario; para el cruce, consulta la cita duplicada.
+## 7. Verificar que las citas permanecen
 
-## Variables y seguridad
+Anota los ids de las citas de la solicitud 13 y ejecuta en la terminal:
 
-| Variable | Uso |
-| --- | --- |
-| baseUrl | Dirección de la API |
-| userEmail / userPassword | Cuenta USER de esta ronda |
-| adminEmail / adminPassword | Cuenta promovida manualmente |
-| userToken / adminToken | JWT guardados tras registro/login |
-| propietarioId / mascotaId | Identificadores obtenidos al crear |
-| veterinarioId / otroVeterinarioId | Veterinarios de la ronda |
-| fechaFutura / fechaAnterior | Fechas futuras para comprobar orden y duplicidad |
-| sqlPromocionAdmin | SQL limitado a la cuenta de esta ronda |
-| agendaAntesReinicio | Instantánea para comprobar persistencia |
-| expiredToken | Token vencido para la prueba opcional |
+```text
+docker compose restart api
+docker compose logs --tail 50 api
+```
 
-El entorno entregado no contiene credenciales reales. Los valores generados durante la ejecución sí son sensibles. No publiques ni subas a Git un entorno exportado con contraseñas o tokens. El marcado como secreto ayuda a ocultarlos en pantalla, pero no sustituye esa precaución.
+Espera a que aparezca **Started VetTurnoApplication** y vuelve a enviar **13 - Consultar agenda**. Los ids y datos deben ser los mismos.
 
-## Interpretar fallos
+## Si algo no funciona
 
-- **No conecta:** revisa que la API esté iniciada en `baseUrl`.
-- **401 en una consulta válida:** inicia sesión de nuevo y confirma que seleccionaste el entorno correcto.
-- **403 al crear veterinarios como Marta:** revisa la promoción en MySQL y ejecuta otra vez su login.
-- **400 en una creación válida:** revisa las variables y si ya ejecutaste esa creación. Si las fechas dejaron de ser futuras, comienza una ronda nueva.
-- **Variables sin resolver:** selecciona el entorno y conserva sus valores en el Runner.
-- **Falla la persistencia:** confirma que ejecutaste la consulta de agenda anterior al reinicio, que conservaste el entorno y que conectas a la misma base.
+- **No conecta:** confirma que la API esta iniciada y baseUrl es correcto.
+- **401 inesperado:** revisa el entorno seleccionado y el token. Dura una hora; repite el login y pega el nuevo valor.
+- **403 con Marta:** comprueba que la cuenta tenga ADMIN y vuelve a iniciar sesion.
+- **400 al crear una mascota o cita:** revisa los ids, la fecha futura y que no hayas enviado esa misma cita antes.
+- **Registro duplicado:** usa el login; no hace falta registrar cada vez.
+- **No aparecen las variables:** selecciona VetTurno - Local sencillo.
 
-Cada ronda añade datos de prueba. El taller no ofrece endpoints DELETE; la colección no elimina registros ni limpia la base.
+Las creaciones agregan datos. No uses Run collection para esta guia: hay pasos manuales entre solicitudes. No publiques el entorno con tus tokens rellenados.
 
-## Manejador global y seguridad
+Para la alternativa con Java fuera de Docker, el acceso a MySQL es `docker exec -it vetturno-mysql mysql -u vetturno -p vetturno` y la clave esta en DB_PASSWORD de config/application-local.properties.
 
-El manejador global transforma las validaciones y reglas de negocio en 400 y los fallos imprevistos en 500 con un mensaje genérico. La colección verifica errores de campos y cruce de horario.
-
-La autenticación y la autorización se aplican en Spring Security, antes de que la solicitud llegue al controlador. Por eso el manejador global no reemplaza las reglas de seguridad: los casos sin token o con token inválido deben producir 401, y un USER que intente registrar veterinarios debe recibir 403.
-
-No se añade un endpoint artificial para provocar un 500. Ese comportamiento se verifica con las pruebas automatizadas del proyecto. Tampoco una respuesta HTTP permite demostrar por sí sola que las contraseñas están almacenadas con BCrypt; esa comprobación corresponde a las pruebas y a la inspección controlada de la base.
-
-Para la alternativa con Java fuera de Docker, usa `docker exec -it vetturno-mysql mysql -u vetturno -p vetturno` y la clave `DB_PASSWORD` de `config/application-local.properties`.
+Las evidencias antiguas de 40 solicitudes corresponden a la coleccion automatizada anterior. La coleccion actual es esta version manual de 18 solicitudes.

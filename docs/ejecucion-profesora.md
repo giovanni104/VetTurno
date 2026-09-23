@@ -103,7 +103,7 @@ SELECT id, email, rol FROM usuarios WHERE email = 'marta@example.com';
 
 Comprueba que se actualizo exactamente la cuenta deseada. Si todo es correcto, ejecuta `COMMIT;`; si no, `ROLLBACK;`. Para salir, escribe `exit;`.
 
-Vuelve a iniciar sesion como Marta y reemplaza el token en Swagger. Ahora puede registrar veterinarios. Si usaste Postman, usa el correo de la ronda y su variable **sqlPromocionAdmin**, en lugar del ejemplo anterior.
+Vuelve a iniciar sesion como Marta y reemplaza el token en Swagger. Ahora puede registrar veterinarios. Si usaste Postman, utiliza el correo de Marta que aparece en el Body de su registro; la guia de Postman incluye el SQL correspondiente.
 
 ## 7. Detener, continuar y comprobar persistencia
 
