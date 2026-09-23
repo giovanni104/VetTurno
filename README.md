@@ -170,6 +170,10 @@ Las agendas se ordenan por fecha ascendente e incluyen citas pasadas. La regla d
 
 Un veterinario existente sin citas devuelve 200 y []; un veterinario inexistente produce 400.
 
+## Pruebas con Postman
+
+Importa la [colección](postman/VetTurno.postman_collection.json) y el [entorno local](postman/VetTurno-Local.postman_environment.json). Sigue la [guía paso a paso](docs/guia-postman.md), incluida la pausa para habilitar ADMIN. Incluye 40 solicitudes para los once endpoints; la [ejecución con Newman](docs/evidencias/postman-newman.json) registró 173 aserciones sin fallos.
+
 ## Flujo en Swagger y primer ADMIN
 
 1. Registra a Paula mediante POST /api/auth/register, con un correo válido y una contraseña elegida localmente. La respuesta contiene token. Si envías rol=ADMIN, se ignora y se guarda USER.
