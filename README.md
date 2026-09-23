@@ -63,7 +63,7 @@ Espera a ver **Started VetTurnoApplication** y abre [Swagger UI](http://localhos
 
 La [guia facil para la profesora](docs/ejecucion-profesora.md) explica cada paso, el primer ADMIN, las pruebas y como detener o reiniciar sin perder datos. La base empieza vacia y las claves incluidas son ejemplos para uso local.
 
-La ejecucion con Java instalado se explica en [ejecucion local](docs/ejecucion-local.md). Los scripts PowerShell pertenecen a esa alternativa y no son necesarios para Docker completo.
+Si quieres ejecutar Java y MySQL instalados en tu equipo, sigue la [guia local para Windows y Linux](docs/ejecucion-local.md). Elige una de las dos formas de arranque; ambas usan la misma API.
 
 ## Contrato HTTP
 
@@ -114,7 +114,7 @@ Importa la [colección](postman/VetTurno.postman_collection.json) y el [entorno 
 2. Usa POST /api/auth/login para comprobar las credenciales. Pulsa **Authorize** y pega solo el token, sin escribir Bearer. Swagger agrega ese prefijo.
 3. Con Paula, intenta POST /api/veterinarios. Debes recibir 403.
 4. Registra la cuenta de Marta mediante la misma API. Todavía tendrá USER.
-5. En Workbench, verifica que el email corresponda a Marta y promueve exclusivamente esa fila. Ejemplo con un correo ficticio que debes sustituir por el registrado:
+5. Abre MySQL como indica la guia de ejecucion que elegiste (cliente de Docker, terminal local o Workbench). Verifica que el email corresponda a Marta y promueve exclusivamente esa fila. Ejemplo con un correo ficticio que debes sustituir por el registrado:
 
 ```sql
 USE vetturno;
@@ -206,17 +206,22 @@ El manejador global traduce errores de validación/negocio y fallos imprevistos.
 
 ## Pruebas y empaquetado
 
-Docker ejecuta las pruebas sin MySQL y genera el JAR durante la construccion. Los comandos siguientes son para la alternativa con JDK 17 instalado. La verificacion de ambos contenedores esta en [evidencia Docker](docs/evidencias/docker.md).
+Docker compila el proyecto y ejecuta las pruebas sin MySQL al construir la imagen. Si estas siguiendo la guia local con Java 17, usa estos comandos desde la carpeta de pom.xml:
 
-Pruebas unitarias y del contrato HTTP, sin MySQL:
+| Que quieres hacer | Windows | Linux |
+| --- | --- | --- |
+| Ejecutar pruebas sin MySQL | `.\mvnw.cmd test` | `sh ./mvnw test` |
+| Crear el JAR y ejecutar pruebas | `.\mvnw.cmd clean verify` | `sh ./mvnw clean verify` |
 
-```powershell
-.\mvnw.cmd test
+Un JAR es el archivo que contiene la aplicacion compilada. Se genera en `target/vetturno-0.0.1-SNAPSHOT.jar`. Con MySQL iniciado y la configuracion local preparada, puedes ejecutarlo en ambos sistemas:
+
+```text
+java -jar target/vetturno-0.0.1-SNAPSHOT.jar
 ```
 
-La prueba VetTurnoApplicationTests se omite explícitamente hasta activar MySQL. Esta omisión no equivale a comprobar persistencia.
+Para comprobar tambien el flujo con MySQL, primero completa la guia local. Esta prueba agrega sus propios datos de ejemplo y necesita la conexion configurada.
 
-Para ejecutar también el flujo automatizado con MySQL, configura una base local de pruebas con las mismas variables. Esta prueba crea sus propios usuarios, responsables, mascotas, veterinarios y citas; promueve solo a su usuario de prueba. No elimina datos existentes.
+**Windows, PowerShell:**
 
 ```powershell
 $env:VETTURNO_MYSQL_TEST = 'true'
@@ -224,17 +229,13 @@ $env:VETTURNO_MYSQL_TEST = 'true'
 Remove-Item Env:VETTURNO_MYSQL_TEST
 ```
 
-La integración verifica MySQL real, BCrypt, roles, referencias, fechas, duplicados, orden, concurrencia y documentos OpenAPI. Produce un reporte con tokens ocultos en target/evidencias/mysql-integracion.json.
+**Linux, Bash:**
 
-Para construir el JAR **ejecutando las pruebas**:
-
-```powershell
-.\mvnw.cmd clean verify
+```bash
+VETTURNO_MYSQL_TEST=true sh ./mvnw test
 ```
 
-Salida: target/vetturno-0.0.1-SNAPSHOT.jar. Puede iniciarse con `java -jar target/vetturno-0.0.1-SNAPSHOT.jar` desde la raíz, con la misma configuración local.
-
-Los reportes originales están en target/surefire-reports. Las pruebas con mocks no certifican MySQL ni el reinicio.
+Sin esa variable, la prueba de integracion se omite. Una prueba omitida no demuestra que MySQL funcione. Los resultados se guardan en `target/surefire-reports`. Para comprobar que las citas permanecen al reiniciar, sigue el paso de persistencia de la guia de Postman.
 
 ## Evidencias, listas y entrega
 
@@ -254,8 +255,8 @@ El commit publicado, las capturas y la demostración deben corresponder a la mis
 | --- | --- |
 | UnsupportedClassVersionError o release 17 no soportado | JAVA_HOME y java/mvn deben apuntar a JDK 17 |
 | Access denied / Communications link failure | MySQL activo, host/puerto, usuario, contraseña y permisos |
-| Unknown database vetturno | Crear la base vacía en Workbench |
-| JWT_SECRET sin resolver o clave inválida | Archivo local en la raíz/config o variable definida; Base64 de 32 bytes aleatorios |
+| Unknown database vetturno | Crear la base del paso 3 de la guia local; en Docker, revisar el inicio de MySQL |
+| JWT_SECRET sin resolver o clave inválida | Revisar JWT_SECRET en la configuracion local o en .env, segun la guia elegida |
 | 401 al consultar | Token vigente, Authorize y prefijo Bearer correcto |
 | 403 al crear veterinario | Login como ADMIN tras promoción controlada |
 | 400 por fecha | Hora futura en Colombia, sin segundos ni offset |

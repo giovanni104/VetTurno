@@ -1,68 +1,61 @@
-# MySQL en Docker para desarrollo local (alternativa)
+# Consultar MySQL cuando ejecutas VetTurno con Docker
 
-Esta alternativa ejecuta Java fuera de Docker. Para iniciar ambos servicios en Windows o Linux, usa la [guia facil](ejecucion-profesora.md).
+Primero inicia el proyecto siguiendo la [guia de Docker](ejecucion-profesora.md). Los comandos siguientes sirven en Windows y Linux.
 
-| Campo de MySQL Workbench | Valor |
-| --- | --- |
-| Connection Name | VetTurno local |
-| Connection Method | Standard (TCP/IP) |
-| Hostname | 127.0.0.1 |
-| Port | 3307 |
-| Username | vetturno |
-| Default Schema | vetturno |
-| Password | Valor DB_PASSWORD de config/application-local.properties |
+## Abrir la base
 
-La contrasena se guarda solo localmente. No se publica en este documento ni en Git.
-El usuario vetturno tiene permisos sobre su base; no es el usuario root del servidor.
-
-## Conexion JDBC local
+Desde la carpeta de compose.yaml, ejecuta:
 
 ```text
-jdbc:mysql://127.0.0.1:3307/vetturno?connectionTimeZone=America/Bogota&allowPublicKeyRetrieval=true&useSSL=false
+docker compose exec mysql mysql -u vetturno -p vetturno
 ```
 
-La configuracion sin TLS es para este contenedor ligado a 127.0.0.1. No es una configuracion de despliegue remoto.
+Escribe la contraseña **MYSQL_PASSWORD** de tu archivo .env. No se muestran caracteres mientras escribes. Si cambiaste el nombre del usuario o de la base en .env, cambia esos valores en el comando.
 
-## Preparacion reproducible
+Cuando aparezca `mysql>`, puedes escribir instrucciones SQL.
 
-1. Instalar e iniciar Docker Desktop.
-2. Ejecutar scripts/Preparar-MySql.ps1 desde PowerShell.
-3. Esperar a que docker compose -f compose.mysql-local.yaml ps muestre healthy.
-4. Iniciar la API con JDK 17 siguiendo el README.
-5. Abrir Workbench con los datos de la tabla y hacer Test Connection.
-6. Actualizar Schemas para inspeccionar tablas y llaves creadas por Hibernate.
+## Ver tablas y relaciones
 
-El script usa la [imagen oficial de MySQL](https://hub.docker.com/_/mysql), version 8.4.11, con credenciales aleatorias. Archivos privados:
-- .local/mysql.env: configuracion inicial del contenedor, incluida la clave root.
-- config/application-local.properties: conexion de la aplicacion y secreto JWT.
-
-Conservar estos archivos para reutilizar el volumen. Cambiar las variables del contenedor despues de inicializarlo no cambia automaticamente las cuentas persistidas.
-
-## Operacion habitual
-
-```powershell
-docker compose -f compose.mysql-local.yaml ps
-docker compose -f compose.mysql-local.yaml stop mysql
-docker compose -f compose.mysql-local.yaml start mysql
-docker compose -f compose.mysql-local.yaml logs --tail 30 mysql
-```
-
-Contenedor: vetturno-mysql. Volumen: vetturno-mysql-data.
-El puerto 3307 permite conservar los otros contenedores del equipo que usan 3306.
-Detener y volver a iniciar el contenedor conserva los datos del volumen.
-
-## Evidencia del esquema
-
-En Workbench, ejecutar y guardar capturas con una descripcion:
+Ejecuta una instruccion cada vez, terminando con punto y coma:
 
 ```sql
-USE vetturno;
 SHOW TABLES;
 SHOW CREATE TABLE mascotas;
 SHOW CREATE TABLE citas;
 SELECT id, email, rol FROM usuarios;
 ```
 
-Para la evidencia BCrypt, consultar solo la cuenta de prueba prevista y ocultar su contrasena original. Nunca capturar JWT_SECRET ni el archivo de credenciales.
+- **SHOW TABLES:** muestra las tablas creadas por la aplicacion.
+- **SHOW CREATE TABLE:** muestra las columnas, relaciones y restricciones de una tabla.
+- **SELECT:** consulta datos sin modificarlos.
 
-La creacion automatica de la base por Docker sustituye el paso manual de crear la base vacia, por solicitud expresa del estudiante. El flujo de datos de negocio sigue realizandose por API.
+Si todavia no hay tablas, comprueba que la API haya terminado de iniciar. Para salir del cliente, escribe `exit;`.
+
+## Comprobar el estado
+
+Estos comandos van en la terminal del sistema, fuera del cliente MySQL:
+
+```text
+docker compose ps
+docker compose logs --tail 30 mysql
+```
+
+El primero muestra los contenedores. El segundo muestra los ultimos mensajes de MySQL.
+
+Los datos se guardan en un volumen: una carpeta administrada por Docker que permanece al detener los contenedores. Usa `docker compose down` para detener el proyecto sin borrar ese volumen.
+
+## Si quieres usar Workbench
+
+La opcion Docker completa no publica un puerto de MySQL en el equipo. Para esta opcion, utiliza el cliente del primer paso.
+
+Si ejecutas MySQL instalado en tu equipo, como explica la [guia local](ejecucion-local.md), puedes crear una conexion en Workbench con:
+
+| Campo | Valor de ejemplo |
+| --- | --- |
+| Hostname | localhost |
+| Port | 3306 |
+| Username | vetturno |
+| Password | DB_PASSWORD de config/application-local.properties |
+| Default Schema | vetturno |
+
+Usa **Test Connection** para comprobarla. Si cambiaste algun dato en tu instalacion, utiliza ese valor. Las capturas para el taller deben ocultar contraseñas y tokens.

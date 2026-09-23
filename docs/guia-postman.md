@@ -136,6 +136,6 @@ Espera a que aparezca **Started VetTurnoApplication** y vuelve a enviar **13 - C
 
 Las creaciones agregan datos. No uses Run collection para esta guia: hay pasos manuales entre solicitudes. No publiques el entorno con tus tokens rellenados.
 
-Para la alternativa con Java fuera de Docker, el acceso a MySQL es `docker exec -it vetturno-mysql mysql -u vetturno -p vetturno` y la clave esta en DB_PASSWORD de config/application-local.properties.
+Si sigues la guia local sin Docker, abre MySQL con Workbench o `mysql -u vetturno -p vetturno`. Usa DB_PASSWORD de config/application-local.properties y ejecuta el mismo SQL del paso de ADMIN. La coleccion y la direccion de la API son iguales en ambas opciones.
 
 Los 18 ejemplos de esta coleccion fueron verificados contra la API. El resultado esta en [verificacion de ejemplos](evidencias/postman-manual.json).

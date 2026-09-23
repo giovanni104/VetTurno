@@ -48,6 +48,21 @@ HTTP POST /api/citas -> Spring Security -> CitaController (@Valid) -> CitaServic
 
 El servicio comprueba fecha, precision de minutos, mascota, veterinario y horario. La base de datos garantiza integridad incluso si dos solicitudes llegan simultaneamente. La conversion a DTO ocurre dentro de la transaccion.
 
+## Palabras que aparecen en el proyecto
+
+| Palabra | Que significa aqui |
+| --- | --- |
+| API | La aplicacion que recibe solicitudes y devuelve respuestas |
+| Endpoint | Una operacion de la API, como GET /api/citas |
+| JSON | El formato de texto usado para enviar y recibir datos |
+| Entidad | Una clase que representa una tabla, como Mascota |
+| DTO | Los campos que se reciben o devuelven en una solicitud |
+| Repositorio | La parte del codigo que consulta y guarda datos |
+| Transaccion | Un grupo de cambios que se confirma completo o se deshace si falla |
+| Llave foranea | Una columna que apunta al id de otra tabla |
+| Token | El valor que recibes al iniciar sesion y envias para identificarte |
+| Prueba con mock | Una prueba que sustituye una dependencia; por ejemplo, no consulta MySQL real |
+
 ## Conceptos para la defensa
 
 - pom.xml declara dependencias, Java y construccion; VetTurnoApplication inicia Spring Boot.
@@ -80,7 +95,7 @@ La arquitectura por capas mantiene responsabilidades pequenas y explicitas. Los 
 - Inyectar `Clock` permite usar hora de Colombia y fijar el tiempo en las pruebas sin esperar a que cambie el reloj real.
 - El filtro JWT valida el token y carga el usuario. La configuracion de seguridad decide los permisos. Su registro automatico como filtro del contenedor se desactiva para que se ejecute solamente en la cadena de Spring Security.
 
-Para el alcance del taller, esta estructura tiene una complejidad adecuada para un desarrollador intermedio. Requiere comprender Java, HTTP, inyeccion de dependencias, JPA y Spring Security; el numero de clases por si solo no determina el nivel del codigo.
+Para estudiar el codigo, sigue primero una solicitud: controller, service y repository. Despues revisa las entidades, los DTO y las reglas de seguridad de esa misma solicitud.
 
 Las listas no tienen paginacion y la consulta de mascotas puede hacer consultas adicionales para cargar sus propietarios. Son limitaciones a considerar si aumenta el volumen de datos. No afectan la regla de horarios ni sustituyen las pruebas del taller.
 

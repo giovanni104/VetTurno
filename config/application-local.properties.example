@@ -1,7 +1,8 @@
-# Copiar como config/application-local.properties (ignorado por Git).
-# Sustituir los marcadores SOLO en la copia local. No publicar credenciales.
-DB_URL=jdbc:mysql://localhost:3306/vetturno?connectionTimeZone=America/Bogota
-DB_USER=REEMPLAZAR_USUARIO_LOCAL
-DB_PASSWORD=REEMPLAZAR_CLAVE_LOCAL
-JWT_SECRET=REEMPLAZAR_BASE64_DE_32_BYTES_ALEATORIOS
+# Copiar como config/application-local.properties.
+# Valores publicos de demostracion para MySQL local; no usar en un servidor publico.
+# Si ya tienes una base y un usuario, ajusta estos datos a tu instalacion.
+DB_URL=jdbc:mysql://localhost:3306/vetturno?connectionTimeZone=America/Bogota&allowPublicKeyRetrieval=true&useSSL=false
+DB_USER=vetturno
+DB_PASSWORD=VetTurnoLocal2026
+JWT_SECRET=MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=
 SHOW_SQL=false
