@@ -11,7 +11,7 @@ En Postman, pulsa **Import** e importa estos dos archivos de la carpeta postman:
 - **VetTurno.postman_collection.json**
 - **VetTurno-Local.postman_environment.json**
 
-Selecciona el entorno **VetTurno - Local sencillo**. La coleccion se llama **VetTurno - Practica paso a paso**. Si conservas la coleccion anterior, usa esta nueva para la practica.
+Selecciona el entorno **VetTurno - Local sencillo**. La coleccion se llama **VetTurno - Practica paso a paso**.
 
 El entorno solo contiene tres valores:
 
@@ -138,4 +138,4 @@ Las creaciones agregan datos. No uses Run collection para esta guia: hay pasos m
 
 Para la alternativa con Java fuera de Docker, el acceso a MySQL es `docker exec -it vetturno-mysql mysql -u vetturno -p vetturno` y la clave esta en DB_PASSWORD de config/application-local.properties.
 
-Las evidencias antiguas de 40 solicitudes corresponden a la coleccion automatizada anterior. La coleccion actual es esta version manual de 18 solicitudes.
+Los 18 ejemplos de esta coleccion fueron verificados contra la API. El resultado esta en [verificacion de ejemplos](evidencias/postman-manual.json).

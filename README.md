@@ -63,7 +63,7 @@ Espera a ver **Started VetTurnoApplication** y abre [Swagger UI](http://localhos
 
 La [guia facil para la profesora](docs/ejecucion-profesora.md) explica cada paso, el primer ADMIN, las pruebas y como detener o reiniciar sin perder datos. La base empieza vacia y las claves incluidas son ejemplos para uso local.
 
-La configuracion anterior con Java instalado sigue disponible en [ejecucion local](docs/ejecucion-local.md). Los scripts PowerShell pertenecen a esa alternativa y no son necesarios para Docker completo.
+La ejecucion con Java instalado se explica en [ejecucion local](docs/ejecucion-local.md). Los scripts PowerShell pertenecen a esa alternativa y no son necesarios para Docker completo.
 
 ## Contrato HTTP
 
@@ -106,7 +106,7 @@ Un veterinario existente sin citas devuelve 200 y []; un veterinario inexistente
 
 ## Pruebas con Postman
 
-Importa la [colección](postman/VetTurno.postman_collection.json) y el [entorno local](postman/VetTurno-Local.postman_environment.json). Sigue la [guía paso a paso](docs/guia-postman.md). Incluye 18 solicitudes manuales para los once endpoints: pulsa Send, copia los tokens al entorno y reemplaza los ids en los ejemplos. No requiere scripts ni Collection Runner. Los reportes antiguos de 40 solicitudes corresponden a la versión automatizada anterior.
+Importa la [colección](postman/VetTurno.postman_collection.json) y el [entorno local](postman/VetTurno-Local.postman_environment.json). Sigue la [guía paso a paso](docs/guia-postman.md). Incluye 18 solicitudes manuales para los once endpoints: pulsa Send, copia los tokens al entorno y reemplaza los ids en los ejemplos. No requiere scripts ni Collection Runner.
 
 ## Flujo en Swagger y primer ADMIN
 
