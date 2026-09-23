@@ -69,6 +69,21 @@ GlobalExceptionHandler traduce excepciones de los controllers y servicios: valid
 
 Spring Security actua antes del controller mediante su cadena de filtros. JwtAuthFilter valida firma y expiracion y carga la identidad. SecurityConfig aplica los roles. SecurityErrorHandler implementa AuthenticationEntryPoint y AccessDeniedHandler para devolver el mismo ApiError ante 401 y 403 producidos en esa cadena.
 
+## Decisiones de implementacion para estudiar
+
+La arquitectura por capas mantiene responsabilidades pequenas y explicitas. Los servicios son clases concretas: no se agrega una interfaz por servicio cuando solo hay una implementacion. Los mapeos a DTO son metodos breves y no necesitan otra biblioteca.
+
+- Los DTO usan `record` de Java 17 para representar datos inmutables con constructor y accesores. Las entidades son clases porque JPA necesita gestionar su estado y un constructor sin argumentos.
+- `@Transactional` delimita las escrituras. Las consultas usan `readOnly = true`; la conversion a DTO ocurre dentro de esa transaccion para acceder a las relaciones LAZY.
+- `@EntityGraph` en la agenda carga mascota, propietario y veterinario para construir la respuesta sin consultar cada relacion por separado.
+- La consulta previa de horario permite dar un mensaje claro. La restriccion UNIQUE en MySQL evita que dos solicitudes simultaneas creen el mismo horario; `saveAndFlush` permite detectar esa restriccion dentro del servicio.
+- Inyectar `Clock` permite usar hora de Colombia y fijar el tiempo en las pruebas sin esperar a que cambie el reloj real.
+- El filtro JWT valida el token y carga el usuario. La configuracion de seguridad decide los permisos. Su registro automatico como filtro del contenedor se desactiva para que se ejecute solamente en la cadena de Spring Security.
+
+Para el alcance del taller, esta estructura tiene una complejidad adecuada para un desarrollador intermedio. Requiere comprender Java, HTTP, inyeccion de dependencias, JPA y Spring Security; el numero de clases por si solo no determina el nivel del codigo.
+
+Las listas no tienen paginacion y la consulta de mascotas puede hacer consultas adicionales para cargar sus propietarios. Son limitaciones a considerar si aumenta el volumen de datos. No afectan la regla de horarios ni sustituyen las pruebas del taller.
+
 ## Fuentes tecnicas consultadas
 
 - [Spring Boot: requisitos](https://docs.spring.io/spring-boot/system-requirements.html).

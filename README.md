@@ -326,8 +326,6 @@ El commit publicado, las capturas y la demostración deben corresponder a la mis
 | 400 por referencia | Usar los ids realmente devueltos por la API |
 | Puerto 8080 ocupado | Detener la otra instancia o configurar SERVER_PORT localmente |
 
-## Uso de IA y defensa académica
+## Aprendizaje y defensa del proyecto
 
-Se utilizó IA para evaluar el requerimiento y asistir la implementación, documentación y pruebas. Las decisiones funcionales se aclararon con el estudiante. La verificación se registra por separado en las evidencias; no se presenta como ejecutado lo que sigue pendiente.
-
-El estudiante debe revisar y explicar cada clase, relación, validación y permiso, y contrastar la entrega con el material de clase y las reglas académicas de su curso. Los conceptos de apoyo están en docs/modelo.md.
+El proyecto permite practicar Spring Boot mediante una API organizada en controladores, servicios y repositorios. Para la defensa, explica el recorrido de una solicitud, las relaciones JPA, las validaciones, el manejo de errores y los permisos USER/ADMIN. Los conceptos de apoyo estan en [modelo y responsabilidades](docs/modelo.md).

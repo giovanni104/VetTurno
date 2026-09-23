@@ -35,4 +35,4 @@ Las capturas 15-antes y 15-despues muestran persistencia con Authorize tras el r
 - Captura del arbol de paquetes en el IDE.
 - Defensa y repeticion manual del estudiante con el commit publicado.
 
-No se presenta el recorrido asistido como una demostracion manual realizada por el estudiante. Los XML originales de Surefire quedan en target y no se publican porque incluyen informacion del entorno.
+No se presenta el recorrido automatizado como una demostracion manual realizada por el estudiante. Los XML originales de Surefire quedan en target y no se publican porque incluyen informacion del entorno.

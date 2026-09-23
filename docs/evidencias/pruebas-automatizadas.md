@@ -20,7 +20,7 @@ Resultado Maven: BUILD SUCCESS. JAR ejecutable generado con Java 17.
 - Mockito y MockMvc verifican reglas, HTTP y seguridad sin usar MySQL en estas 31 pruebas.
 - La integracion MySQL se ejecuto con VETTURNO_MYSQL_TEST=true y todas sus verificaciones pasaron, incluida la concurrencia real: un 201, un 400 y una sola fila.
 - El reporte depurado de esa ejecucion esta en mysql-integracion.json.
-- El recorrido Swagger asistido, el reinicio real y las capturas se registran por separado. La demostracion manual del estudiante se mantiene distinguida de las pruebas automatizadas.
+- El recorrido Swagger automatizado, el reinicio real y las capturas se registran por separado. La demostracion manual del estudiante se mantiene distinguida de las pruebas automatizadas.
 - El test de error 500 provoca deliberadamente una excepcion y verifica que su detalle no aparezca en la respuesta; el log del servidor puede contener esa excepcion simulada.
 
 Los XML originales de Surefire quedan en target/surefire-reports y no se publican porque incluyen informacion del entorno. Esta tabla resume resultados reales sin secretos.

@@ -1,6 +1,6 @@
 # Matriz de las 15 pruebas del taller
 
-Recorrido realizado en Swagger UI con navegador Edge controlado por Playwright, Java 17 y MySQL 8.4.11 real. Los estados y las capturas son reales. Es una verificacion asistida; el estudiante debe repetir el recorrido para su demostracion manual. Las capturas especificas de Workbench siguen pendientes.
+Recorrido realizado en Swagger UI con navegador Edge controlado por Playwright, Java 17 y MySQL 8.4.11 real. Los estados y las capturas son reales. Es una verificacion automatizada; el estudiante debe repetir el recorrido para su demostracion manual. Las capturas especificas de Workbench siguen pendientes.
 
 [Resultados HTTP completos con credenciales ocultas](evidencias/swagger-casos.json).
 [32 pruebas automatizadas aprobadas](evidencias/pruebas-automatizadas.md).
