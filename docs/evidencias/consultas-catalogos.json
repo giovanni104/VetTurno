@@ -1,0 +1,58 @@
+[
+  {
+    "respuesta": [
+      {
+        "id": 1,
+        "nombre": "Responsable fa346005-b152-4837-879d-08c82e973965",
+        "telefono": "3001234567",
+        "email": null
+      },
+      {
+        "id": 2,
+        "nombre": "Laura UI 1790140269551",
+        "telefono": "3001234567",
+        "email": "laura@example.com"
+      }
+    ],
+    "ruta": "/api/propietarios",
+    "estado": 200
+  },
+  {
+    "respuesta": [
+      {
+        "id": 1,
+        "nombre": "Luna",
+        "especie": "Canino",
+        "raza": null,
+        "propietarioId": 1,
+        "propietarioNombre": "Responsable fa346005-b152-4837-879d-08c82e973965"
+      },
+      {
+        "id": 2,
+        "nombre": "Luna UI",
+        "especie": "Canino",
+        "raza": "Mestiza",
+        "propietarioId": 2,
+        "propietarioNombre": "Laura UI 1790140269551"
+      }
+    ],
+    "ruta": "/api/mascotas",
+    "estado": 200
+  },
+  {
+    "respuesta": [
+      {
+        "id": 1,
+        "nombre": "Andres fa346005-b152-4837-879d-08c82e973965",
+        "especialidad": "General"
+      },
+      {
+        "id": 2,
+        "nombre": "Andres UI 1790140269551",
+        "especialidad": "Medicina general"
+      }
+    ],
+    "ruta": "/api/veterinarios",
+    "estado": 200
+  }
+]

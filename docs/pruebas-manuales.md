@@ -16,7 +16,7 @@ Recorrido realizado en Swagger UI con navegador Edge controlado por Playwright, 
 | 7 | POST /api/veterinarios con ADMIN | 201 y persistencia | APROBADO: 201 tras promocion controlada y nuevo login | [Swagger](evidencias/swagger-caso-07.png) |
 | 8 | Crear propietario valido | 201 y DTO plano | APROBADO: 201 | [Swagger](evidencias/swagger-caso-08.png) |
 | 9 | Crear mascota con propietario existente | 201 y relacion correcta | APROBADO: 201 y propietarioId correcto | [Swagger](evidencias/swagger-caso-09.png) |
-| 10 | Crear mascota con propietario inexistente | 400, sin insertar fila | APROBADO: 400 | [Swagger](evidencias/swagger-caso-10.png), pruebas de servicio impiden guardar |
+| 10 | Crear mascota con propietario inexistente | 400, sin insertar fila | APROBADO: 400 | [Swagger](evidencias/swagger-caso-10.png), [conteo MySQL: cero filas](evidencias/mysql-mascota-invalida.txt) |
 | 11 | Crear cita futura con referencias validas | 201 y cita persistida | APROBADO: 201 | [Swagger](evidencias/swagger-caso-11.png) |
 | 12 | Crear cita pasada | 400 | APROBADO: 400 | [Swagger](evidencias/swagger-caso-12.png) |
 | 13 | Repetir veterinario y horario | 400, una sola cita | APROBADO: 400 y cantidad 1 en MySQL | [Swagger](evidencias/swagger-caso-13.png), [conteo](evidencias/mysql-duplicados.txt) |

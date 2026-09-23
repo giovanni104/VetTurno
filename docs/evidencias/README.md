@@ -18,6 +18,10 @@ Datos ficticios. Capturas tomadas de Swagger UI mediante Edge/Playwright. Las ar
 | [swagger-autorizado.png](swagger-autorizado.png) | Swagger con autorizacion aplicada, sin revelar el JWT. |
 | [swagger-casos.json](swagger-casos.json) | Entradas y respuestas reales del recorrido, credenciales ocultas. |
 | [persistencia-reinicio.json](persistencia-reinicio.json) | Comparacion antes/despues: mismos 5 registros. |
+| [clon-remoto.txt](clon-remoto.txt) | Clon nuevo de GitHub, Maven Wrapper, Java 17, MySQL y ruta protegida. |
+| [fuentes-sha256.json](fuentes-sha256.json) | Huellas de las 45 fuentes probadas y del JAR; comparadas contra el clon. |
+| [consultas-catalogos.json](consultas-catalogos.json) | GET de propietarios, mascotas y veterinarios con respuesta 200 y DTO. |
+| [mysql-mascota-invalida.txt](mysql-mascota-invalida.txt) | Verificacion real de que no se inserto la mascota con propietario inexistente. |
 | [reinicio-java17.txt](reinicio-java17.txt) | Inicio de una nueva JVM tras detener la anterior. |
 
 Las capturas swagger-caso-02 a swagger-caso-14 corresponden a la [matriz](../pruebas-manuales.md).

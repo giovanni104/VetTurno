@@ -1,0 +1,11 @@
+Verificacion desde un clon nuevo de GitHub
+Fecha: 2026-09-23T00:24:21.0582255-05:00
+Commit probado: 022d08879ff23ea8142f3526dcda086999061d4e
+Java: Temurin 17.0.20.1+1
+Build: Maven Wrapper 3.9.16, package exitoso
+Las 32 pruebas se ejecutaron antes de publicar; el clon se recompilo sin repetirlas.
+Fuentes coincidentes con las probadas: 45
+Configuracion MySQL suministrada mediante archivo local excluido de Git.
+OpenAPI: VetTurno - Veterinaria Huellitas; 7 rutas, 11 operaciones.
+GET /api/citas sin JWT: 401
+La instancia temporal del clon fue detenida; la instancia principal sigue en 8080.

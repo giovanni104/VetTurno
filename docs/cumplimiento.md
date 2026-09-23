@@ -11,7 +11,7 @@ Esta lista distingue codigo preparado de evidencia ejecutada. MySQL, Java 17, Sw
 | Sin pasado ni mismo veterinario/hora | @Future, reloj Colombia, consulta derivada y UNIQUE | Verificado en MySQL y Swagger 12/13; concurrencia real aprobada. |
 | USER no registra veterinarios | SecurityConfig exige ADMIN | 403 verificado en prueba automatizada y Swagger (caso 6). |
 | Datos persisten al reiniciar | MySQL; ddl-auto=update | Reinicio de JVM verificado; 5 citas con mismos ids/datos. |
-| Swagger y README permiten probar | OpenApiConfig, Bearer y guia | Recorrido asistido Swagger aprobado; clon remoto y defensa manual por completar. |
+| Swagger y README permiten probar | OpenApiConfig, Bearer y guia | Recorrido Swagger y clon remoto aprobados; defensa manual por completar. |
 
 ## Parte 1: proyecto
 
@@ -77,8 +77,9 @@ Esta lista distingue codigo preparado de evidencia ejecutada. MySQL, Java 17, Sw
 - [x] 32 pruebas aprobadas con Java 17 y MySQL real. Ver evidencias/pruebas-automatizadas.md.
 - [x] Empaquetado Maven clean verify exitoso con Temurin JDK 17.0.20.1.
 - [x] Captura Swagger con Authorize en evidencias/swagger-autorizado.png.
-- [ ] Publicacion en GitHub, enlaces verificados y ejecucion desde cero.
-- [ ] Confirmar que la evidencia y la demostracion corresponden al commit entregado.
+- [x] Publicacion en GitHub y ejecucion desde clon remoto con Maven Wrapper y Java 17; evidencias/clon-remoto.txt.
+- [x] Las 45 fuentes del clon coinciden con las probadas; huellas en evidencias/fuentes-sha256.json.
+- [ ] Repetir la demostracion manual del estudiante con el commit final publicado.
 
 ## Rúbrica
 
