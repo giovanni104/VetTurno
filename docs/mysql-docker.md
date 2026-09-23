@@ -1,6 +1,6 @@
-# MySQL local en Docker
+# MySQL en Docker para desarrollo local (alternativa)
 
-Configuracion solicitada por el estudiante para ejecutar el taller. La aplicacion Java se ejecuta fuera de Docker.
+Esta alternativa ejecuta Java fuera de Docker. Para iniciar ambos servicios en Windows o Linux, usa la [guia facil](ejecucion-profesora.md).
 
 | Campo de MySQL Workbench | Valor |
 | --- | --- |
@@ -27,7 +27,7 @@ La configuracion sin TLS es para este contenedor ligado a 127.0.0.1. No es una c
 
 1. Instalar e iniciar Docker Desktop.
 2. Ejecutar scripts/Preparar-MySql.ps1 desde PowerShell.
-3. Esperar a que docker compose ps muestre healthy.
+3. Esperar a que docker compose -f compose.mysql-local.yaml ps muestre healthy.
 4. Iniciar la API con JDK 17 siguiendo el README.
 5. Abrir Workbench con los datos de la tabla y hacer Test Connection.
 6. Actualizar Schemas para inspeccionar tablas y llaves creadas por Hibernate.
@@ -41,10 +41,10 @@ Conservar estos archivos para reutilizar el volumen. Cambiar las variables del c
 ## Operacion habitual
 
 ```powershell
-docker compose ps
-docker compose stop mysql
-docker compose start mysql
-docker compose logs --tail 30 mysql
+docker compose -f compose.mysql-local.yaml ps
+docker compose -f compose.mysql-local.yaml stop mysql
+docker compose -f compose.mysql-local.yaml start mysql
+docker compose -f compose.mysql-local.yaml logs --tail 30 mysql
 ```
 
 Contenedor: vetturno-mysql. Volumen: vetturno-mysql-data.

@@ -85,4 +85,13 @@ Esta lista distingue codigo preparado de evidencia ejecutada. MySQL, Java 17, Sw
 
 Se siguen los siete criterios de la tabla: 10 + 18 + 20 + 12 + 18 + 12 + 10 = 100.
 La formula de ocho sumandos de la pagina 15 no corresponde a esa tabla.
-Docker no aporta puntaje. Por solicitud posterior del estudiante se usa un contenedor solo para MySQL; la API se ejecuta con Java 17 fuera de Docker.
+Docker no aporta puntaje. La actividad extra usa un contenedor para la API Java 17 y otro para MySQL. Ver [guia](ejecucion-profesora.md) y [evidencia Docker](evidencias/docker.md).
+
+## Actividad extra sin puntaje: Docker
+
+- [x] Dockerfile con Java 17, JAR, puerto 8080 y variables externas.
+- [x] .dockerignore excluye configuracion privada y archivos innecesarios.
+- [x] Imagen construida y API conectada a MySQL en Docker Compose.
+- [x] Login y consulta en Swagger comprobados; captura en evidencias/docker-swagger.png.
+- [x] Guia con los pasos para Windows y Linux y explicacion de imagen y contenedor.
+- [x] Reinicio real y persistencia verificados; 40 solicitudes y 173 aserciones aprobadas.

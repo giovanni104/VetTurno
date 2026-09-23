@@ -1,86 +1,161 @@
-# Ejecutar VetTurno desde una descarga limpia
+# Guia facil: VetTurno con Docker en Windows o Linux
 
-Esta guia sirve para clonar el repositorio o descargarlo como ZIP. No necesitas archivos del equipo del estudiante, Maven instalado ni una base de datos con registros previos.
+## 1. Tener Docker listo
 
-## Requisitos en Windows
+En Windows, instala y abre Docker Desktop con contenedores Linux. En Linux, instala Docker Engine con el complemento Docker Compose, o Docker Desktop.
 
-- JDK 17 instalado y JAVA_HOME apuntando a su carpeta.
-- Docker Desktop instalado, iniciado y configurado para contenedores Linux.
-- PowerShell y acceso a Internet para descargar Maven, dependencias y la imagen MySQL.
-- Puertos locales 8080 y 3307 disponibles.
+Abre una terminal y comprueba:
 
-Git solo es necesario si eliges clonar. Postman y MySQL Workbench son opcionales; Swagger permite probar la API desde el navegador.
-
-## Arranque
-
-1. Descarga y descomprime el proyecto, o clona https://github.com/giovanni104/VetTurno.git.
-2. Abre PowerShell en la carpeta que contiene pom.xml.
-3. Comprueba Java e inicia el proyecto:
-
-```powershell
-java -version
-powershell -ExecutionPolicy Bypass -File .\scripts\Iniciar-Proyecto.ps1
+```text
+docker --version
+docker compose version
+docker info
 ```
 
-La opcion ExecutionPolicy se aplica a ese proceso, sin cambiar permanentemente la politica del equipo. Si tu institucion impide ejecutar scripts, sigue la alternativa con MySQL existente del README.
+Docker debe estar iniciado. En Linux, tu usuario debe tener permiso para ejecutar Docker. No necesitas instalar Java, Maven ni MySQL: se ejecutan dentro de los contenedores.
 
-Si Java no es 17, establece JAVA_HOME con la ruta real de tu instalacion antes de ejecutar el script:
+## 2. Descargar el proyecto
 
-```powershell
-$env:JAVA_HOME = 'C:\ruta\real\del\jdk-17'
+En [GitHub](https://github.com/giovanni104/VetTurno), pulsa **Code > Download ZIP** y descomprime. Tambien puedes usar Git:
+
+```text
+git clone https://github.com/giovanni104/VetTurno.git
+cd VetTurno
 ```
 
-El script verifica Java, prepara MySQL, espera a que este disponible y ejecuta el Maven Wrapper incluido. Espera el mensaje **Started VetTurnoApplication**. La primera ejecucion puede tardar por las descargas.
+Abre la terminal en la carpeta que contiene **compose.yaml**, **Dockerfile** y **pom.xml**. Si descargaste ZIP, puede llamarse VetTurno-main.
 
-Abre [Swagger UI](http://localhost:8080/swagger-ui/index.html). La API utiliza 8080; MySQL utiliza 3307.
+## 3. Preparar un solo archivo
 
-## Archivos que se generan automaticamente
+Con el explorador de archivos, duplica **.env.example** y llama a la copia **.env**. En Linux, activa la visualizacion de archivos ocultos si no lo ves. En Windows, muestra las extensiones y comprueba que no se llame .env.txt.
 
-| Archivo | Contenido |
+Tambien puedes copiarlo desde la terminal:
+
+| Terminal | Comando |
 | --- | --- |
-| .local/mysql.env | Credenciales nuevas del contenedor MySQL |
-| config/application-local.properties | Conexion de la API y secreto JWT nuevo |
+| Windows (PowerShell o CMD) | `copy .env.example .env` |
+| Linux (Bash) | `cp .env.example .env` |
 
-Estos archivos **no deben descargarse ni copiarse del estudiante**: el script los crea en tu equipo. No se publican porque contienen secretos. Conserva tus copias al reiniciar y al reutilizar el volumen.
+Para probar el taller localmente, puedes dejar los valores de ejemplo. Son claves publicas de demostracion, no las credenciales privadas del estudiante. No deben utilizarse en un servidor publico.
 
-Para consultar la contraseña de MySQL, abre config/application-local.properties y busca DB_PASSWORD. Host: 127.0.0.1; puerto: 3307; base y usuario: vetturno. No hace falta .local/conexion-mysql.txt.
+No necesitas las carpetas .local, tmp ni target. Tampoco necesitas crear config/application-local.properties.
 
-El repositorio incluye codigo fuente, configuracion de ejemplo, Maven Wrapper, Compose, scripts, coleccion Postman y guias. target se genera al compilar y tmp no participa en el arranque.
+## 4. Iniciar la aplicacion y la base de datos
 
-## Primer uso y cuenta ADMIN
+Este comando es el mismo en Windows y Linux:
 
-La base comienza vacia. Hibernate crea las tablas al iniciar la API. Registra las cuentas mediante Swagger o sigue la [guia de Postman](guia-postman.md).
-
-El registro siempre asigna USER. Para habilitar ADMIN, registra primero una cuenta y abre MySQL:
-
-```powershell
-docker exec -it vetturno-mysql mysql -u vetturno -p vetturno
+```text
+docker compose up --build -d
 ```
 
-Introduce DB_PASSWORD de tu configuracion local. Sustituye el correo del ejemplo por el que acabas de registrar:
+La primera ejecucion descarga las imagenes y dependencias, compila el proyecto, ejecuta las pruebas que no necesitan MySQL, crea la base y arranca la API. Puede tardar varios minutos; requiere Internet. La prueba de integracion se omite durante la construccion porque la base aun no esta iniciada.
+
+Comprueba el estado y el inicio:
+
+```text
+docker compose ps
+docker compose logs --tail 50 api
+```
+
+MySQL debe aparecer **healthy** y la API **Up**. En los logs debe aparecer **Started VetTurnoApplication**. Que el contenedor este Up no significa por si solo que Spring ya termino de iniciar.
+
+## 5. Abrir Swagger y probar
+
+Abre [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html).
+
+1. En **POST /api/auth/register**, pulsa **Try it out** y registra una cuenta:
+
+```json
+{
+  "email": "paula@example.com",
+  "password": "PaulaTaller2026"
+}
+```
+
+2. Ejecuta **POST /api/auth/login** con esos mismos datos.
+3. Copia el valor de **token** de la respuesta.
+4. Pulsa **Authorize**, pega solo el token y confirma.
+5. Ejecuta **GET /api/propietarios**. Debe responder **200**; al principio devolvera `[]`.
+
+El token dura una hora. Si vence, vuelve a iniciar sesion. La base empieza vacia; el registro siempre asigna USER.
+
+Para probar todos los endpoints, importa la coleccion y el entorno de la carpeta **postman** y sigue la [guia de Postman](guia-postman.md).
+
+## 6. Habilitar la cuenta ADMIN
+
+Registra otra cuenta, por ejemplo marta@example.com, mediante Swagger. Luego ejecuta:
+
+```text
+docker compose exec mysql mysql -u vetturno -p vetturno
+```
+
+Cuando pida la contraseña, escribe el valor de **MYSQL_PASSWORD** de tu archivo .env. Al escribirla no se muestran caracteres.
+
+Dentro de MySQL, ejecuta:
 
 ```sql
 START TRANSACTION;
 UPDATE usuarios SET rol = 'ADMIN'
-WHERE email = 'correo-registrado@example.com' AND rol = 'USER';
+WHERE email = 'marta@example.com' AND rol = 'USER';
 SELECT ROW_COUNT() AS filas_actualizadas;
-SELECT id, email, rol FROM usuarios WHERE email = 'correo-registrado@example.com';
+SELECT id, email, rol FROM usuarios WHERE email = 'marta@example.com';
 ```
 
-Si la cuenta es correcta y se actualizo una fila, ejecuta COMMIT; de lo contrario, ROLLBACK. Inicia sesion nuevamente con esa cuenta y usa su token. No hay usuarios ni contraseñas de aplicacion predefinidos.
+Comprueba que se actualizo exactamente la cuenta deseada. Si todo es correcto, ejecuta `COMMIT;`; si no, `ROLLBACK;`. Para salir, escribe `exit;`.
 
-## Detener y volver a iniciar
+Vuelve a iniciar sesion como Marta y reemplaza el token en Swagger. Ahora puede registrar veterinarios. Si usaste Postman, usa el correo de la ronda y su variable **sqlPromocionAdmin**, en lugar del ejemplo anterior.
 
-Deten la API con Ctrl+C. Opcionalmente deten MySQL:
+## 7. Detener, continuar y comprobar persistencia
 
-```powershell
-docker compose stop mysql
+Para detener sin borrar datos:
+
+```text
+docker compose down
 ```
 
-Para continuar, ejecuta nuevamente Iniciar-Proyecto.ps1. Se conservan tus credenciales y los datos del volumen. No elimines el volumen para un reinicio normal.
+Para volver a iniciar:
 
-Si ya existe un contenedor o volumen VetTurno y faltan sus credenciales originales, el script se detiene para evitar asociarlo con contraseñas incorrectas. Recupera la configuracion de esa instalacion; descargar otra copia no cambia las contraseñas de un volumen existente.
+```text
+docker compose up -d
+```
 
-## Otros sistemas y alternativa sin Docker
+Para reiniciar solo la API y verificar que las citas permanecen:
 
-El script de arranque es para Windows. En macOS/Linux o con MySQL instalado directamente, sigue **Como ejecutar desde cero** en el README: crea una base vacia, copia config/application-local.properties.example, configura conexion y JWT_SECRET y ejecuta `sh ./mvnw spring-boot:run`. Necesitas Java 17 e Internet. No uses las rutas de Windows en esos sistemas.
+```text
+docker compose restart api
+```
+
+Espera al mensaje de inicio y consulta de nuevo la agenda. El volumen **mysql-data** conserva los datos. No agregues `-v` al comando down: esa opcion elimina el volumen y sus datos.
+
+Si cambias codigo, vuelve a usar `docker compose up --build -d`.
+
+## Problemas habituales
+
+| Problema | Que revisar |
+| --- | --- |
+| docker no responde | Instala Docker y comprueba que este iniciado |
+| Permiso denegado en Linux | Revisa los permisos de tu usuario para Docker |
+| Mensaje que pide .env | Copia .env.example como .env junto a compose.yaml |
+| Puerto 8080 ocupado | Deten otra API que este usando ese puerto y repite el arranque |
+| Swagger no abre todavia | Revisa `docker compose logs --tail 50 api` y espera al inicio |
+| MySQL no esta healthy | Revisa `docker compose logs --tail 50 mysql` |
+| Access denied tras cambiar .env | El volumen conserva las contraseñas iniciales; recupera los valores con los que lo creaste |
+| 401 | Inicia sesion y autoriza con un token vigente |
+| 403 al crear veterinario | Usa una cuenta ADMIN tras la promocion controlada |
+
+Los comandos usan los valores de base y usuario de la plantilla. Si los cambias en .env, ajusta tambien el comando del cliente MySQL.
+
+## Que contiene la solucion Docker
+
+- **Dockerfile:** receta de dos etapas. Primero genera el JAR con Maven y Java 17; despues copia solo ese JAR a una imagen de ejecucion Java 17.
+- **Imagen:** resultado construido a partir del Dockerfile.
+- **Contenedor:** una ejecucion de la imagen.
+- **compose.yaml:** inicia api y mysql juntos. La API espera a que MySQL este healthy.
+- **.dockerignore:** limita la construccion al codigo y al POM; excluye credenciales y archivos locales.
+- **.env:** valores que Compose inyecta al crear los contenedores; no se copian dentro de la imagen.
+
+Dentro de Docker, la API conecta a **mysql:3306**: mysql es el nombre del servicio. El puerto de MySQL no se publica en el equipo; puedes inspeccionarlo con el cliente del paso 6. Swagger se publica en 127.0.0.1:8080.
+
+Esta actividad es extra y vale cero puntos. La generacion del JAR se realiza dentro de Docker para que los pasos sean iguales en Windows y Linux. La evidencia de ejecucion se registra en [verificacion Docker](evidencias/docker.md).
+
+Referencias: [construccion por etapas](https://docs.docker.com/build/building/multi-stage/) y [orden de inicio en Compose](https://docs.docker.com/compose/how-tos/startup-order/).

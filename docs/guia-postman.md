@@ -7,7 +7,7 @@ Importa en Postman los dos archivos de la carpeta `postman`:
 - `VetTurno.postman_collection.json`: solicitudes y pruebas automáticas.
 - `VetTurno-Local.postman_environment.json`: variables locales.
 
-Selecciona el entorno **VetTurno - Local**. La API debe estar iniciada y conectada a MySQL. `baseUrl` es `http://localhost:8080`; el puerto 3307 corresponde a MySQL, no a la API.
+Selecciona el entorno **VetTurno - Local**. La API debe estar iniciada y conectada a MySQL. `baseUrl` es `http://localhost:8080`; MySQL usa el puerto interno 3306 en Docker. Inicia el proyecto con la [guia facil](ejecucion-profesora.md).
 
 La colección contiene **40 solicitudes para los 11 endpoints**. Las respuestas 400, 401 y 403 son resultados esperados en las pruebas negativas: sus aserciones deben aparecer aprobadas.
 
@@ -32,10 +32,10 @@ Si ejecutas toda la colección desde el principio, también se detendrá aquí. 
 Abre una terminal y entra al cliente MySQL del contenedor:
 
 ```powershell
-docker exec -it vetturno-mysql mysql -u vetturno -p vetturno
+docker compose exec mysql mysql -u vetturno -p vetturno
 ```
 
-Introduce la contraseña **de la base de datos** cuando la solicite. Puedes consultarla en el valor `DB_PASSWORD` de `config/application-local.properties`, generado por el script de preparacion. No es la contraseña de Paula ni la de Marta.
+Introduce la contraseña **de la base de datos** cuando la solicite. Puedes consultarla en el valor `MYSQL_PASSWORD` de `.env`. No es la contraseña de Paula ni la de Marta.
 
 En las variables del entorno Postman, copia el valor de **sqlPromocionAdmin** y ejecútalo en MySQL. Revisa que se actualice exactamente una fila y que el correo de esta ronda tenga rol ADMIN. El SQL incluye una transacción y una consulta de comprobación.
 
@@ -60,7 +60,7 @@ No vuelvas a ejecutar la solicitud 01 entre estas fases: inicia una ronda nueva 
 Después de terminar las carpetas anteriores:
 
 1. Conserva el entorno y sus valores, incluida `agendaAntesReinicio`.
-2. Detén y vuelve a iniciar **la API**, manteniendo la base de datos.
+2. Ejecuta `docker compose restart api` para reiniciar **la API**, manteniendo la base de datos.
 3. Espera a que la API esté disponible.
 4. Ejecuta **05 - Despues de reiniciar la API**.
 
@@ -133,3 +133,5 @@ El manejador global transforma las validaciones y reglas de negocio en 400 y los
 La autenticación y la autorización se aplican en Spring Security, antes de que la solicitud llegue al controlador. Por eso el manejador global no reemplaza las reglas de seguridad: los casos sin token o con token inválido deben producir 401, y un USER que intente registrar veterinarios debe recibir 403.
 
 No se añade un endpoint artificial para provocar un 500. Ese comportamiento se verifica con las pruebas automatizadas del proyecto. Tampoco una respuesta HTTP permite demostrar por sí sola que las contraseñas están almacenadas con BCrypt; esa comprobación corresponde a las pruebas y a la inspección controlada de la base.
+
+Para la alternativa con Java fuera de Docker, usa `docker exec -it vetturno-mysql mysql -u vetturno -p vetturno` y la clave `DB_PASSWORD` de `config/application-local.properties`.

@@ -31,6 +31,6 @@ El PDF del taller define el alcance. Estas decisiones aclaran sus vacios sin agr
 - MySQL e Hibernate update, como propone el taller. No se incorpora H2 como sustituto.
 - Orden ascendente incluye las citas pasadas; no existe filtro de fechas adicional en el alcance.
 - Veterinario inexistente: regla de negocio 400; existente sin citas: 200 con lista vacia.
-- Por solicitud posterior del estudiante, MySQL 8.4.11 se ejecuta en Docker, puerto local 3307 y volumen persistente; la API sigue fuera del contenedor.
+- La actividad extra ejecuta API y MySQL 8.4.11 con Docker Compose. La configuracion anterior con Java local y MySQL en 3307 se conserva como alternativa.
 - Pruebas automatizadas adicionales apoyan el control de calidad; no sustituyen las 15 pruebas manuales.
 - Swagger publico es la excepcion tecnica indicada en la parte 7.

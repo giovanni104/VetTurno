@@ -1,15 +1,16 @@
-# MySQL local solicitado por el estudiante. La API se ejecuta con Java 17 fuera de Docker.
+name: vetturno-docker
+
 services:
   mysql:
     image: mysql:8.4.11
-    container_name: vetturno-mysql
-    restart: unless-stopped
-    env_file:
-      - .local/mysql.env
-    ports:
-      - "127.0.0.1:3307:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?Copia .env.example como .env}
+      MYSQL_USER: ${MYSQL_USER:?Copia .env.example como .env}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Copia .env.example como .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Copia .env.example como .env}
+      TZ: America/Bogota
     volumes:
-      - vetturno-mysql-data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
     healthcheck:
       test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql -u \"$$MYSQL_USER\" -D \"$$MYSQL_DATABASE\" -e 'SELECT 1' >/dev/null 2>&1"]
@@ -18,6 +19,19 @@ services:
       retries: 20
       start_period: 30s
 
+  api:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?connectionTimeZone=America/Bogota&allowPublicKeyRetrieval=true&useSSL=false
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?Copia .env.example como .env}
+      TZ: America/Bogota
+    depends_on:
+      mysql:
+        condition: service_healthy
+
 volumes:
-  vetturno-mysql-data:
-    name: vetturno-mysql-data
+  mysql-data:

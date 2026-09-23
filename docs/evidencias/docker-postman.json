@@ -1,0 +1,1238 @@
+{
+  "fecha": "2026-09-23T15:58:27.602Z",
+  "herramienta": "Newman 6.2.1",
+  "solicitudes": 40,
+  "aserciones": 173,
+  "fallos": 0,
+  "operacionesCubiertas": [
+    "GET /api/citas",
+    "GET /api/citas/veterinario/{id}",
+    "GET /api/mascotas",
+    "GET /api/propietarios",
+    "GET /api/veterinarios",
+    "POST /api/auth/login",
+    "POST /api/auth/register",
+    "POST /api/citas",
+    "POST /api/mascotas",
+    "POST /api/propietarios",
+    "POST /api/veterinarios"
+  ],
+  "fases": [
+    {
+      "fase": "01 - Pausa de ADMIN verificada",
+      "solicitudes": 8,
+      "aserciones": 33,
+      "fallos": 0
+    },
+    {
+      "fase": "02, 03 y 04 - Flujo completo y rechazos",
+      "solicitudes": 29,
+      "aserciones": 127,
+      "fallos": 0
+    },
+    {
+      "fase": "05 - Reinicio real del contenedor y persistencia",
+      "solicitudes": 2,
+      "aserciones": 9,
+      "fallos": 0
+    },
+    {
+      "fase": "06 - JWT vencido (fixture firmado con expiracion pasada)",
+      "solicitudes": 1,
+      "aserciones": 4,
+      "fallos": 0
+    }
+  ],
+  "notas": [
+    "ADMIN se habilito exclusivamente para la cuenta creada en esta prueba, mediante MySQL.",
+    "Se reinicio realmente el contenedor api antes de la fase 05; las tres citas conservaron sus ids y datos.",
+    "El JWT vencido fue un fixture local firmado con exp pasada, no un secreto exportado a la coleccion."
+  ],
+  "resultados": [
+    {
+      "nombre": "01 - Registrar Paula (nueva ronda)",
+      "metodo": "POST",
+      "ruta": "/api/auth/register",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Se recibe un JWT, sin contrasena",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "02 - Registro invalido con varios errores",
+      "metodo": "POST",
+      "ruta": "/api/auth/register",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Errores de todos los campos esperados",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "03 - Email de usuario repetido",
+      "metodo": "POST",
+      "ruta": "/api/auth/register",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "04 - Login Paula y guardar userToken",
+      "metodo": "POST",
+      "ruta": "/api/auth/login",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Se recibe un JWT, sin contrasena",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "05 - Login con contrasena incorrecta",
+      "metodo": "POST",
+      "ruta": "/api/auth/login",
+      "estado": 401,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 401",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "06 - Consultar agenda sin token",
+      "metodo": "GET",
+      "ruta": "/api/citas",
+      "estado": 401,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 401",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "07 - Registrar Marta (todavia USER)",
+      "metodo": "POST",
+      "ruta": "/api/auth/register",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Se recibe un JWT, sin contrasena",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "08 - Marta no puede crear veterinarios - PAUSA SQL",
+      "metodo": "POST",
+      "ruta": "/api/veterinarios",
+      "estado": 403,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 403",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "09 - Login Marta despues de la promocion",
+      "metodo": "POST",
+      "ruta": "/api/auth/login",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Se recibe un JWT, sin contrasena",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "10 - Crear veterinario con ADMIN",
+      "metodo": "POST",
+      "ruta": "/api/veterinarios",
+      "estado": 201,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 201",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Id generado positivo",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "11 - Crear segundo veterinario con ADMIN",
+      "metodo": "POST",
+      "ruta": "/api/veterinarios",
+      "estado": 201,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 201",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Id generado positivo",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "12 - Listar veterinarios con USER",
+      "metodo": "GET",
+      "ruta": "/api/veterinarios",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "La lista contiene el registro creado",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "13 - Crear propietario",
+      "metodo": "POST",
+      "ruta": "/api/propietarios",
+      "estado": 201,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 201",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Id generado positivo",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Propietario sin colecciones",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "14 - Listar propietarios",
+      "metodo": "GET",
+      "ruta": "/api/propietarios",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "La lista contiene el registro creado",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "15 - Crear mascota relacionada",
+      "metodo": "POST",
+      "ruta": "/api/mascotas",
+      "estado": 201,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 201",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Id generado positivo",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Relacion correcta y DTO plano",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "16 - Listar mascotas",
+      "metodo": "GET",
+      "ruta": "/api/mascotas",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "La lista contiene el registro creado",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "17 - Agendar cita futura",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "estado": 201,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 201",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Id generado positivo",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "CitaDTO plano con nombres correctos",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "18 - Crear una cita anterior para verificar orden",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "estado": 201,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 201",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Id generado positivo",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "19 - Misma hora para otro veterinario es valida",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "estado": 201,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 201",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Id generado positivo",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "20 - Listar agenda y guardar datos antes del reinicio",
+      "metodo": "GET",
+      "ruta": "/api/citas",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Agenda en fecha ascendente",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Se conservan las tres citas de esta ronda",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "21 - Filtrar agenda del primer veterinario",
+      "metodo": "GET",
+      "ruta": "/api/citas/veterinario/1",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Agenda en fecha ascendente",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Solo las dos citas del veterinario solicitado, sin duplicados",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "22 - Filtrar agenda del segundo veterinario",
+      "metodo": "GET",
+      "ruta": "/api/citas/veterinario/2",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Solo la cita del segundo veterinario",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "23 - USER no registra veterinarios",
+      "metodo": "POST",
+      "ruta": "/api/veterinarios",
+      "estado": 403,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 403",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "24 - Token invalido",
+      "metodo": "GET",
+      "ruta": "/api/citas",
+      "estado": 401,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 401",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "25 - Propietario con varios campos invalidos",
+      "metodo": "POST",
+      "ruta": "/api/propietarios",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Errores de todos los campos esperados",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "26 - Mascota con propietario inexistente",
+      "metodo": "POST",
+      "ruta": "/api/mascotas",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "27 - Mascota con campos obligatorios ausentes",
+      "metodo": "POST",
+      "ruta": "/api/mascotas",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Errores de todos los campos esperados",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "28 - Cita en el pasado",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Errores de todos los campos esperados",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "29 - Horario duplicado del mismo veterinario",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Mensaje de cruce de horario",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "30 - Cita con segundos distintos de cero",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "31 - Cita con mascota inexistente",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "32 - Cita con veterinario inexistente",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "33 - Filtro con veterinario inexistente",
+      "metodo": "GET",
+      "ruta": "/api/citas/veterinario/9223372036854775807",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "34 - Cita con varios campos ausentes",
+      "metodo": "POST",
+      "ruta": "/api/citas",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Errores de todos los campos esperados",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "35 - ADMIN envia veterinario invalido",
+      "metodo": "POST",
+      "ruta": "/api/veterinarios",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Errores de todos los campos esperados",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "36 - JSON mal formado",
+      "metodo": "POST",
+      "ruta": "/api/propietarios",
+      "estado": 400,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 400",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "37 - Comprobar que el duplicado no agrego otra cita",
+      "metodo": "GET",
+      "ruta": "/api/citas/veterinario/1",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sigue habiendo dos citas del primer veterinario",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "38 - Renovar login de Paula tras reinicio",
+      "metodo": "POST",
+      "ruta": "/api/auth/login",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Se recibe un JWT, sin contrasena",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "39 - Comprobar persistencia de las citas",
+      "metodo": "GET",
+      "ruta": "/api/citas",
+      "estado": 200,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 200",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Agenda en fecha ascendente",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Mismos ids y datos previos (reinicio manual requerido)",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    },
+    {
+      "nombre": "40 - Rechazar JWT vencido",
+      "metodo": "GET",
+      "ruta": "/api/citas",
+      "estado": 401,
+      "aserciones": [
+        {
+          "nombre": "Respuesta JSON",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "Sin cookie de sesion",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "HTTP 401",
+          "aprobada": true,
+          "omitida": false
+        },
+        {
+          "nombre": "ApiError consistente y sin traza interna",
+          "aprobada": true,
+          "omitida": false
+        }
+      ]
+    }
+  ]
+}

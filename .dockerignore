@@ -1,0 +1,7 @@
+# Solo estos archivos son necesarios para compilar.
+# Quedan fuera .git, .env, .local, config, target, IDE y evidencias.
+**
+!Dockerfile
+!pom.xml
+!src/
+!src/**

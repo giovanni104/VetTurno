@@ -1,0 +1,23 @@
+{
+  "reinicioReal": true,
+  "configuracionSha256": {
+    ".env.example": "9F48FC389DDAD61736A354C514F3C3E21629A71D40728E729397195C848D0309",
+    "Dockerfile": "0429229EEE922E634A62E21AE2F66C36DCBCA9635E0AF3A4B4A311691AD4283B",
+    "compose.yaml": "2FE5D9897C3A846E0CBEF3795EE401EF2594ECD9F8107F2124DEBBCA2F923C1C",
+    ".dockerignore": "C15D612894586811F547388621F8F6A7A72915C71E7D422111F6835FA8DF99AA"
+  },
+  "postman": {
+    "aserciones": 173,
+    "fallos": 0,
+    "solicitudes": 40
+  },
+  "fecha": "2026-09-23T16:02:37.3024600Z",
+  "copiaLimpia": "Compose validado e imagen construida con solo archivos entregables y .env copiado de la plantilla",
+  "pruebasBuild": {
+    "omitidas": 1,
+    "fallos": 0,
+    "ejecutadas": 31
+  },
+  "imagen": "sha256:ed59df4e9df12b369a38ccff4edc30b315ffa494ce5fd60236d4a413a095794d",
+  "entorno": "Windows / Docker Desktop / contenedores Linux"
+}
